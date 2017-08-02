@@ -86,6 +86,7 @@ function buyLicense (data) {
     return go('/sign-up?redirect=' + url)
   }
 
+  recordSubscriptionEvent('Checkout', 'Buyout ' + data.vendor)
   buyLicense[data.method](data)
 }
 
@@ -184,6 +185,7 @@ function checkoutSubscriptions (e, el) {
   var els = toArray(document.querySelectorAll('[role="new-subs"] tr') || [])
   var subs = els.map(getDataSet)
   if (!subs.length) return
+  recordSubscriptionEvent('Checkout');
   var data = getTargetDataSet(el)
   if (!isValidPayMethod(data.method, checkoutSubscriptions)) return
   if(transformServices.abTest && transformServices.abTest.convert) {
@@ -215,6 +217,7 @@ checkoutSubscriptions.paypal = function checkoutSubscriptionsStripe (data, subs)
     if (!body.redirect) {
       return recordErrorAndGo(Error('Missing paypal redirect'), 'Checkout Subscriptions PayPal', '/account/services/error')
     }
+    recordSubscriptionEvent('PayPal Successful');
     window.location = body.redirect
   })
 }
@@ -506,11 +509,12 @@ function reachedMaxCartSubscriptions () {
 function addSub (obj) {
   var t = getTemplateEl('subscription-row')
   var container = document.querySelector('[role="new-subs"]')
-  var div = document.createElement('tbody')
+  var div = document.createElement('tbody');
   render(div, t.textContent, obj)
   container.appendChild(div.firstElementChild)
   updateTotalCheckoutCost()
-  showNewSubscriptions()
+  showNewSubscriptions();
+  recordSubscriptionEvent('Subscription Added to Cart', obj.label);
 }
 
 function removeSub (e, el) {
@@ -522,13 +526,17 @@ function removeSub (e, el) {
 }
 
 function subscribeGold (e, el) {
-  if (reachedMaxCartSubscriptions())
+  if (reachedMaxCartSubscriptions()) {
+    recordSubscriptionEvent('Reached Max Cart Subscriptions', 'Gold');
     return window.alert(strings.cart5)
-  if (document.querySelector('[type="hidden"][name="type"][value="gold"]'))
+  }
+  if (document.querySelector('[type="hidden"][name="type"][value="gold"]')) {
+    recordSubscriptionEvent('Item Already In Cart', 'Gold');
     return window.alert(strings.goldInCart)
-  var data = getTargetDataSet(el) || {}
+  }
   var opts = {
     name: "Gold Membership",
+    label: 'Gold',
     cost: "5.00",
     fields: [
       { key: "name", value: "Gold Membership" },
@@ -536,6 +544,9 @@ function subscribeGold (e, el) {
       { key: "amount", value: 500 }
     ]
   }
+
+  var data = getTargetDataSet(el) || {}
+
   var fin = function (opts) {
     if(isSignedIn()) {
       addSub(opts)
@@ -544,6 +555,7 @@ function subscribeGold (e, el) {
     }
     else {
       var url = '/account/services?gold'
+      recordSubscriptionEvent('Redirected to Sign Up', 'Gold');
       return go('/sign-up?redirect=' + encodeURIComponent(url))
     }
   }
@@ -588,20 +600,30 @@ function buyoutNewLicense (e, el) {
   if (!data.vendor) return
   if (!data.identity) return  
   data.identity = serviceUrlToChannelId(data.identity)
+  recordSubscriptionEvent('Prepay New License', {
+    label: getVendorname(data.vendor),
+    vendor: data.vendor
+  });
   return go('/account/services/buyout?vendor=' + data.vendor + '&identity=' + data.identity)
 }
 
 function subscribeNewLicense (e, el) {
-  if (reachedMaxCartSubscriptions())
+  if (reachedMaxCartSubscriptions()) {
+    recordSubscriptionEvent('Reached Max Cart Subscriptions', {
+      vendor: data.vendor,
+      label: 'Whitelist'
+    });
     return window.alert(strings.cart5)
+  }
 
   var data = getTargetDataSet(el)
   if (!data) return
   if (!data.vendor) return
   if (!data.identity) return
 
-  if (alreadyInCart(data))
+  if (alreadyInCart(data)) {
     return window.alert(strings.licenseInCart)
+  }
 
   //This strips https://twitch/tv and http://youtube.com/channel/ stuff from the identity
   data.identity = serviceUrlToChannelId(data.identity)
@@ -616,13 +638,17 @@ function subscribeNewLicense (e, el) {
     if (err) return window.alert(err.message)
 
     if(!isSignedIn()) {
-      var url = '/account/services?vendor=' + data.vendor + '&identity=' + data.identity
+      var url = '/account/services?vendor=' + data.vendor + '&identity=' + data.identity;
+      recordSubscriptionEvent('Redirected to Sign Up', {
+        label: 'Whitelist ' + getVendorName(data.vendor)
+      })
       return go('/sign-up?redirect=' + encodeURIComponent(url))
     }
 
     var name = "Whitelisting for " + data.identity + " on " + getVendorName(data.vendor)
     addSub({
       name: name,
+      label: 'Whitelist ' + getVendorName(data.vendor),
       cost: (vendorPrices[data.vendor].monthly / 100).toFixed(2),
       fields: [
         { key: "amount", value: vendorPrices[data.vendor].monthly },
@@ -630,7 +656,7 @@ function subscribeNewLicense (e, el) {
         { key: "vendor", value: data.vendor },
         { key: "identity", value: data.identity }
       ]
-    })
+    });
     toasty(strings.whitelistAdded)
     scrollToCheckout()
   })
