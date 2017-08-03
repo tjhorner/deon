@@ -1,4 +1,3 @@
-var endhost         = 'https://connect.monstercat.com'
 var endpoint        = endhost + '/api'
 var newshost        = '/news-api'
 var datapoint       = 'https://blobcache.monstercat.com'
@@ -151,12 +150,12 @@ function recordPage () {
 function recordEvent (name, obj, done) {
   if (typeof done != 'function')
     done = function (err, obj, xhr) {}
-  if (location.host.indexOf('localhost') == 0) {
+  if (ENV=='development') {
     //This is here to quickly toggle between wanting to record events and not wanting to
     if(false) {
-      return done(Error('Localhost not supported.'))
+      return done(Error('Not recording events in development mode.'))
     }
-    console.warn('Recording an event while using localhost', name, obj)
+    console.warn('Recording an event while in development mode: ', name, obj)
   }
 
   requestJSON({
