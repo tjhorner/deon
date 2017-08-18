@@ -420,8 +420,11 @@ function getDownloadLink (releaseId, trackId) {
   return endpoint + '/release/' + releaseId + '/download?' + objectToQueryString(opts)
 }
 
-function getGetGoldLink () {
+function getGetGoldLink (source) {
   var goldUrl = '/account/services?ref=gold'
+  if(source) {
+    goldUrl += '&source=source'
+  }
   return isSignedIn() ? goldUrl : '/sign-up?redirect=' + encodeURIComponent(goldUrl)
 }
 
