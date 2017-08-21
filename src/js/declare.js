@@ -213,19 +213,6 @@ function interceptClick (e) {
   if (!isAnchor || !t.hasAttribute('href')) return
   if(e.ctrlKey) return
   var url = t.getAttribute("href")
-  var clickEvent = t.getAttribute("click-event");
-  if(clickEvent) {
-    var opts = {};
-    var label = t.getAttribute('click-label');
-    var category = t.getAttribute('click-category');
-    if(label) {
-      opts.label = label;
-    }
-    if(category) {
-      opts.category = category;
-    }
-    recordEvent(clickEvent, opts);
-  }
   if (url.indexOf('http') == 0)
     return
   e.preventDefault()

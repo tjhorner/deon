@@ -33,6 +33,23 @@ document.addEventListener("DOMContentLoaded", function (e) {
     document.addEventListener("dblclick", interceptDoubleClick)
     document.addEventListener("keypress", interceptKeyPress)
     document.addEventListener("submit", interceptSubmit);
+
+    document.addEventListener("click", function (e) {
+      var t = e.target;
+      var action = t.getAttribute("click-action");
+      if(action) {
+        var opts = {};
+        var label = t.getAttribute('click-label');
+        var category = t.getAttribute('click-category');
+        if(label) {
+          opts.label = label;
+        }
+        if(category) {
+          opts.category = category;
+        }
+        recordEvent(action, opts);
+      }
+    });
     stateChange(location.pathname + location.search)
     stickyPlayer()
   })
@@ -420,11 +437,8 @@ function getDownloadLink (releaseId, trackId) {
   return endpoint + '/release/' + releaseId + '/download?' + objectToQueryString(opts)
 }
 
-function getGetGoldLink (source) {
+function getGetGoldLink () {
   var goldUrl = '/account/services?ref=gold'
-  if(source) {
-    goldUrl += '&source=source'
-  }
   return isSignedIn() ? goldUrl : '/sign-up?redirect=' + encodeURIComponent(goldUrl)
 }
 
