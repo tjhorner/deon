@@ -549,7 +549,7 @@ function subscribeGold (e, el) {
   var fin = function (opts) {
     if(isSignedIn()) {
       addSub(opts)
-      recordGoldEvent('Gold Added to Card', obj.label);
+      recordGoldEvent('Gold Added to Cart');
       toasty(strings.goldAdded)
       scrollToCheckout()
     }

@@ -188,7 +188,7 @@ function recordErrorAndGo (err, where, uri) {
 function recordGoldEvent (action, obj, done) {
   obj = obj || {};
   obj.category = 'Gold';
-  return recordEvent(name, obj, done);
+  return recordEvent(action, obj, done);
 }
 
 function recordSubscriptionEvent (name, obj, done) {
