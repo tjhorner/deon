@@ -155,20 +155,12 @@
 }
 
 .bestof2017-results .artist-row .top-song-container {
-  margin-top: 5px;
-}
-
-.bestof2017-results .artist-row .top-song {
-  line-height: 28px;
+  margin-top: 10px;
 }
 
 .bestof2017-results .artist-row .top-song button {
   color: #fff;
   font-size: 1rem;
-}
-
-.bestof2017-results .artist-row .top-song button:before {
-  content: attr(index);
 }
 
 .bestof2017-results .artist-row .top-song button.active {

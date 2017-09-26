@@ -321,11 +321,11 @@ function updateBestOf2017SongResults () {
         return removeSong();
       }
 
-      if(!result.counts || result.counts.length == 0) {
+      if(!result.countsByIndex || result.countsByIndex.length == 0) {
         return removeSong();
       }
 
-      var results = result.counts.map(function (votes, index) {
+      var results = result.countsByIndex.map(function (votes, index) {
         votes += Math.floor(Math.random() * 5)
         return {
           songId: result.poll.choices[index],
@@ -338,7 +338,7 @@ function updateBestOf2017SongResults () {
         }
         return a.votes > b.votes ? -1 : 1;
       });
-
+  
       var topSong = results[0];
 
       if(topSong.votes == 0) {
