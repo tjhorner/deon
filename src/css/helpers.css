@@ -361,6 +361,21 @@ ul.errors li {
   margin-bottom: 0.5em;
 }
 
+.alert {
+  padding: 1rem 1.5rem;
+  background: #F0F0F0;
+  border-radius: 5px;
+  margin-bottom: 1rem;
+  border: 1px solid #C0C0C0;
+}
+
+.alert .button--close {
+  float: right;
+  font-size: 12px;
+  padding: 0.5rem;
+  margin-right: -0.5rem;
+}
+
 #front-form {
   position: fixed;
   right: 1vw;

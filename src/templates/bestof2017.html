@@ -1,0 +1,115 @@
+<script type="text/template"
+        mustache-name="voted-for-tweet"
+        template-name="voted-for-tweet"
+        >
+<form id="tweet-vote" onsubmit="submitTweetBestOf2017(event)">
+  <textarea name="tweet" rows="3">{{votedForTweet}}</textarea>
+  <div>
+    <a class="button button--cta" target="_blank" role="tweet">Tweet Your Votes</a>
+    {{#viewResultsLink}}
+    <a class="button" href="/bestof2017/results">View the results</a>
+    {{/viewResultsLink}}
+  </div>
+</form>
+</script>
+
+<script type="text/template"
+        route="^[Bb]est[Oo]f2017\/results$"
+        page-title="Best of 2017 Results"
+        transform="transformBestOf2017Results"
+        completed="completedBestOf2017Results">
+<div class="container bestof2017-page">
+  <div class="panel">
+    <h1>
+        Best of 2017 Live Results
+    </h1>
+    {{#loading}}
+      <p>Loading...</p>
+    {{/loading}}
+    {{#data}}
+      <p class="last-updated-msg hide" role="last-updated"></p>
+      {{#showThankYou}}
+        <div class="alert alert-info" role="thank-you-alert">
+          <button type="button" class="button button--close" onclick="clickCloseBestOf2017ThankYou()"><i class="fa fa-remove"></i></button>
+          <h2>Thank you for voting!</h2>
+          {{>voted-for-tweet}}
+        </div>
+      {{/showThankYou}}
+      <div role="bestof2017-results" class="bestof2017-results bestof2017">
+        {{>bestof2017-results}}
+      </div>
+    {{/data}}
+  </div>
+</div>
+</script>
+
+<script type="text/template"
+        template-name=""
+        mustache-name="bestof2017-results"
+        >
+      {{#results}}
+        <div class="artist-row bestof2017-result no-top-song" artist-id="{{artist._id}}">
+          <div class="banner" style="background-image: url({{artist.profileImageUrl}}?image_width=1024); background-position: center {{artist.imagePositionY}}%"></div>
+          <span role="rank" class="rank"></span>
+          <h3>{{artist.name}} <span class="votes" role="votes"></span></h3>
+          <div class="top-song-container" role="top-song">loading...</div>
+        </div>
+      {{/results}}
+</script>
+
+<script type="text/template"
+        route="^[Bb]est[Oo]f2017$"
+        page-title="Best of 2017"
+        transform="transformBestOf2017"
+        completed="completedBestOf2017">
+<div class="container">
+  <div class="panel">
+    {{#data}}
+      {{^status.open}}
+        Voting is closed.
+      {{/status.open}}
+      {{#status.open}}
+        {{^isSignedIn}}
+          You need to <a href="/sign-in">sign in</a> or <a href="/signup">register</a> to vote.
+        {{/isSignedIn}}
+        {{#isSignedIn}}
+          {{#status.voted}}
+            <h2>Thank you for voting!</h2>
+            {{>voted-for-tweet}}
+          {{/status.voted}}
+          {{^status.voted}}
+            <div class="bestof2017-voting bestof2017">
+              <h2>Vote For Your Top 10 Artists of 2017</h2>
+              <p>Put them in any order. Also vote for your favorite song by that artist.</p>
+              <form role="bestof2017">
+                {{#artistBlocks}}
+                  <div class="row artist-row artist-row-{{.}} empty">
+                    <div class="banner"></div>
+                    <div class="col-md-6 voting-col voting-col-artists">
+                      <h3 role="artist-name">Select an Artist</h3>
+                      <select name="artist[{{.}}]" role="bestof2017-artist">
+                        {{#artistOptions}}
+                          <option value="{{_id}}">{{name}}</option>
+                        {{/artistOptions}}
+                      </select>
+                    </div>
+                    <div class="col-md-6 voting-col voting-col-song">
+                      <h3 class="favorite-song-title">Favorite <span role="artist-name" class="artist-name"></span> Song</h3>
+                      <select disabled role="song-poll" name="artistSongs[{{.}}]">
+                      </select>
+                    </div>
+                  </div>
+                {{/artistBlocks}}
+                <div class="submit-container">
+                  <button class="btn button--cta" type="button" onclick="clickSubmitBestOf2017(event)">Submit Your Votes</button>
+                  <br /><a href="/bestof2017/results">View Results</a>
+                </div>
+              </form>
+            </div>
+          {{/status.voted}}
+        {{/isSignedIn}}
+      {{/status.open}}
+    {{/data}}
+  </div>
+</div>
+</script>

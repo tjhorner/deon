@@ -10,7 +10,7 @@ var sel = {
   volumeInnerSlider: '.volume-slider-inner',
   volumeOuterSlider: '.volume-slider-outer',
   volumeSliderContainer: '.volume-slider-container',
-  controls: '.controls'  
+  controls: '.controls'
 }
 
 var playerEvents = {
@@ -265,7 +265,15 @@ function loadAndPlayTracks (index) {
 }
 
 function buildTracks () {
-  var els = Array.prototype.slice.call(document.querySelectorAll('[play-link]'))
+  var els = Array.prototype.slice.call(document.querySelectorAll('[play-link]'));
+  els = els.sort(function (el1, el2) {
+    var idx1 = parseInt(el1.getAttribute('index'));
+    var idx2 = parseInt(el2.getAttribute('index'));
+    if(idx1 == idx2) {
+      return 0;
+    }
+    return idx1 > idx2 ? 1 : -1;
+  });
   return els.map(mapTrackElToPlayer)
 }
 
@@ -335,8 +343,22 @@ function updateControls () {
 
   var playing = player.playing || player.loading
   var item = player.items[player.index]
+  console.log('item.source', item.source);
   var selector = '[role="play-song"][play-link="' + (item ? item.source : '') + '"]'
-  var el = item ? document.querySelector(selector) : undefined
+
+  var allMatches = document.querySelectorAll(selector)
+  var el;
+  if(item) {
+    if(allMatches.length > 1) {
+      //try to find one with a matching index first
+      el = document.querySelector(selector+ '[index="' + player.index + '"]');
+      console.log('el', el);
+    }
+    if(!el) {
+      el = allMatches[0]
+    }
+  }
+
   if (el) {
     el.classList.toggle('active', playing)
   }
