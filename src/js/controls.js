@@ -47,7 +47,7 @@ document.addEventListener('DOMContentLoaded', function(e) {
   player.setStoredVolume(volume)
   player.setVolume(volume)
   bindVolumeEvents()
-  setVolumeDisplay()  
+  setVolumeDisplay()
 })
 
 function recordPlayerEvent (e) {
