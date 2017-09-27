@@ -338,7 +338,7 @@ function updateBestOf2017SongResults () {
         }
         return a.votes > b.votes ? -1 : 1;
       });
-  
+
       var topSong = results[0];
 
       if(topSong.votes == 0) {
@@ -452,6 +452,11 @@ function completedBestOf2017 () {
   var artistSelects = document.querySelectorAll('select[role=bestof2017-artist]')
   artistSelects.forEach(function (el, index) {
     el.addEventListener('change', function (e) {
+      if(!isSignedIn()) {
+        go('/sign-in?redirect=bestof2017')
+        toasty('Log in or sign up to vote on Best of 2017');
+        return
+      }
       var artistId = el.value
       var artistRowEl = document.querySelector('.artist-row-' + index)
       var songArtistNameEl = document.querySelector('.artist-row-' + index + ' span[role=artist-name]')

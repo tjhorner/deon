@@ -70,44 +70,47 @@
       {{/status.open}}
       {{#status.open}}
         {{^isSignedIn}}
-          You need to <a href="/sign-in">sign in</a> or <a href="/signup">register</a> to vote.
         {{/isSignedIn}}
-        {{#isSignedIn}}
-          {{#status.voted}}
-            <h2>Thank you for voting!</h2>
-            {{>voted-for-tweet}}
-          {{/status.voted}}
-          {{^status.voted}}
-            <div class="bestof2017-voting bestof2017">
+        {{#status.voted}}
+          <h2>Thank you for voting!</h2>
+          {{>voted-for-tweet}}
+        {{/status.voted}}
+        {{^status.voted}}
+          <div class="bestof2017-voting bestof2017">
+            {{#isSignedIn}}
               <h2>Vote For Your Top 10 Artists of 2017</h2>
               <p>Put them in any order. Also vote for your favorite song by that artist.</p>
-              <form role="bestof2017">
-                {{#artistBlocks}}
-                  <div class="row artist-row artist-row-{{.}} empty">
-                    <div class="banner"></div>
-                    <div class="col-md-6 voting-col voting-col-artists">
-                      <h3 role="artist-name">Select an Artist</h3>
-                      <select name="artist[{{.}}]" role="bestof2017-artist">
-                        {{#artistOptions}}
-                          <option value="{{_id}}">{{name}}</option>
-                        {{/artistOptions}}
-                      </select>
-                    </div>
-                    <div class="col-md-6 voting-col voting-col-song">
-                      <h3 class="favorite-song-title">Favorite <span role="artist-name" class="artist-name"></span> Song</h3>
-                      <select disabled role="song-poll" name="artistSongs[{{.}}]">
-                      </select>
-                    </div>
+            {{/isSignedIn}}
+            {{^isSignedIn}}
+              <h2>Sign In to Vote For Your Top 10 Artists of 2017</h2>
+              <p>You need to <a href="/sign-in">sign in</a> or <a href="/signup">register</a> to vote.</p>
+            {{/isSignedIn}}
+            <form role="bestof2017">
+              {{#artistBlocks}}
+                <div class="row artist-row artist-row-{{.}} empty">
+                  <div class="banner"></div>
+                  <div class="col-md-6 voting-col voting-col-artists">
+                    <h3 role="artist-name">Select an Artist</h3>
+                    <select name="artist[{{.}}]" role="bestof2017-artist">
+                      {{#artistOptions}}
+                        <option value="{{_id}}">{{name}}</option>
+                      {{/artistOptions}}
+                    </select>
                   </div>
-                {{/artistBlocks}}
-                <div class="submit-container">
-                  <button class="btn button--cta" type="button" onclick="clickSubmitBestOf2017(event)">Submit Your Votes</button>
-                  <br /><a href="/bestof2017/results">View Results</a>
+                  <div class="col-md-6 voting-col voting-col-song">
+                    <h3 class="favorite-song-title">Favorite <span role="artist-name" class="artist-name"></span> Song</h3>
+                    <select disabled role="song-poll" name="artistSongs[{{.}}]">
+                    </select>
+                  </div>
                 </div>
-              </form>
-            </div>
-          {{/status.voted}}
-        {{/isSignedIn}}
+              {{/artistBlocks}}
+              <div class="submit-container">
+                <button class="btn button--cta" type="button" onclick="clickSubmitBestOf2017(event)">Submit Your Votes</button>
+                <br /><a href="/bestof2017/results">View Results</a>
+              </div>
+            </form>
+          </div>
+        {{/status.voted}}
       {{/status.open}}
     {{/data}}
   </div>
