@@ -145,6 +145,17 @@ function completedBestOf2017Results () {
   window.addEventListener('popstate', function () {
     clearTimeout(timeout);
     clearTimeout(timeout2);
+  });
+
+  //Load background images
+  var banners = document.querySelectorAll('.banner[background-image]');
+  banners.forEach(function (bannerEl) {
+    var img = new Image();
+    img.onload = function () {
+      bannerEl.style.backgroundImage = 'url(' + img.src + ')';
+      bannerEl.classList.toggle('on', true);
+    }
+    img.src = bannerEl.getAttribute("background-image");
   })
 }
 
@@ -372,7 +383,8 @@ function updateBestOf2017SongResults () {
           el.classList.toggle('no-top-song', false);
           var votes = topSong.votes + ' vote' + (topSong.votes == 1 ? '': 's');
           track.votes = votes;
-          render(topSongEl,'<h4>Top Song <span class="votes">{{votes}}</span></h4><div class="top-song">{{>playSong}} <span class="top-song-name">{{title}} by {{artistsTitle}}</span></div>', track);
+          track.hasGold = hasGoldAccess();
+          render(topSongEl, getTemplate('bestof2017-topsong'), track);
           doneLoading();
         });
       })
@@ -485,18 +497,24 @@ function completedBestOf2017 () {
         var artist = transformBestOf2017.artistAtlas[artistId];
         songArtistNameEl.innerHTML = artist.name;
         artistNameEl.innerHTML = artist.name;
-        artistRowEl.classList.toggle('empty', false);
         songEl.innerHTML = '<option>loading...</option>';
 
         getArtistDetails(artist.vanityUri, function (err, details) {
           if(err) {
             bannerEl.classList.toggle('on', false);
             bannerEl.style.backgroundImage = '';
+            artistRowEl.classList.toggle('empty', false);
             return
           }
-          bannerEl.style.backgroundImage = 'url(' + details.profileImageUrl + '?image_width=1024)';
-          bannerEl.style.backgroundPosition = 'center ' + details.imagePositionY + '%';
-          bannerEl.classList.toggle('on', true);
+
+          var img = new Image();
+          img.onload = function () {
+            bannerEl.style.backgroundImage = 'url(' + details.profileImageUrl + '?image_width=1024)';
+            bannerEl.style.backgroundPosition = 'center ' + details.imagePositionY + '%';
+            bannerEl.classList.toggle('on', true);
+            artistRowEl.classList.toggle('empty', false);
+          }
+          img.src = details.profileImageUrl + '?image_width=1024'
         });
       }
       else {

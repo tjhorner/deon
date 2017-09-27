@@ -57,8 +57,12 @@
   background-color: transparent;
   left: 0px;
   top: 0px;
+  opacity: 0;
+  transition: opacity 1s ease 0.25s;
+}
+
+.bestof2017 .artist-row .banner.on {
   opacity: 1;
-  transition: opacity 0.5s ease 0.25s;
 }
 
 .bestof2017-voting .artist-row.empty .banner {
@@ -113,7 +117,7 @@
   color: #fff;
   height: 106px;
   padding: 0.5rem 1rem 0.5rem 2.75rem;
-  background: #fff;
+  background: #000;
 }
 
 .bestof2017-results .artist-row.top {
@@ -167,6 +171,36 @@
   color: dodgerblue;
 }
 
+.bestof2017-results .download-area {
+  position: absolute;
+  right: 25px;
+  top: 20px;
+  opacity: 0.25;
+  text-align: center;
+}
+
+.bestof2017-results .download-area .requires-gold {
+  padding: 2px 0 0 0;
+  font-size: 0.8em;
+}
+
+.bestof2017-results .download-area .requires-gold a {
+  color: gold;
+  font-size: 1em;
+}
+
+.bestof2017-results .artist-row:hover .download-area {
+  opacity: 1;
+}
+
+.bestof2017-results .download-area.has-gold {
+  top: 25px;
+}
+
+.bestof2017-results .download-area a.download {
+  color: #fff;
+}
+
 #tweet-vote textarea {
   width: 50%;
   margin-bottom: 0.25rem;
@@ -186,7 +220,7 @@
 
 .last-updated-msg {
   color: #aaa;
-  font-size: 12px;
+  font-size: 16px;
   margin-bottom: 1rem;
 }
 
