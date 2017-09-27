@@ -69,6 +69,7 @@ function transformBestOf2017Results (obj, done) {
       return toasty(new Error(err));
     }
     obj.poll = breakdown.poll;
+    transformBestOf2017Results.poll = obj.poll;
 
     //Map results to the choices in the poll
     var voteResults = breakdown.countsByIndex.map(function (votes, index) {
@@ -106,6 +107,7 @@ function transformBestOf2017Results (obj, done) {
     });
   });
 }
+transformBestOf2017Results.poll = {}
 
 function completedBestOf2017Results () {
   updateBestOf2017Results.lastUpdated = new Date().getTime();
@@ -113,13 +115,16 @@ function completedBestOf2017Results () {
   var updateResults = function () {
     updateBestOf2017Results();
     clearTimeout(timeout);
-    timeout = setTimeout(updateResults, 30000);
+    if(new Date(transformBestOf2017Results.poll.end) > new Date()) {
+      timeout = setTimeout(updateResults, 30000);
+    }
   }
   updateResults();
 
   var timeout2 = null;
   var updateTimeNotice = function () {
     var now = new Date().getTime();
+
     var diff = now - updateBestOf2017Results.lastUpdated;
     var diffS = diff / 1000;
     var updatedText = 'Last updated ';
@@ -133,6 +138,16 @@ function completedBestOf2017Results () {
       var minutes = Math.round(diffS / 60);
       updatedText += minutes + ' minute' + (minutes == 1 ? '' : 's') + ' ago';
     }
+
+    updatedText += '.';
+
+    if(new Date(transformBestOf2017Results.poll.end).getTime() < now) {
+      updatedText += ' Voting is closed.';
+    }
+    else {
+      updatedText += ' Voting closes at ' + formatBestOf2017EndTime(transformBestOf2017Results.poll.end) + '.';
+    }
+
     var el = document.querySelector("[role=last-updated]");
     el.innerHTML = updatedText;
     el.classList.toggle('hide', false);
@@ -432,9 +447,15 @@ function transformBestOf2017 (obj, done) {
       obj.votedForTweet = getVotedForTweet(transformBestOf2017.artistAtlas, breakdown);
       obj.tweetIntentURL = getVotedForTweetIntentUrl(obj.votedForTweet);
       obj.viewResultsLink = true;
+      obj.votingCloseTime = formatBestOf2017EndTime(poll.end)
       done(null, obj);
     });
   });
+}
+
+function formatBestOf2017EndTime (date) {
+  var parts = formatDateJSON(date);
+  return parts.weekday + ' at ' + parts.hours + ':' + parts.minutes;
 }
 
 
