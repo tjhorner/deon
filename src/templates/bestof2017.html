@@ -35,6 +35,9 @@
           {{>voted-for-tweet}}
         </div>
       {{/showThankYou}}
+      {{#status.canVote}}
+      <a href="/bestof2017" class="button">Vote Now</a>
+      {{/status.canVote}}
       <div role="bestof2017-results" class="bestof2017-results bestof2017">
         {{>bestof2017-results}}
       </div>
