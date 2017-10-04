@@ -418,3 +418,71 @@ ul.errors li {
 #front-form.show {
   bottom: 0px;
 }
+
+#site-notice {
+  height: auto;
+  background: dodgerblue;
+  color: #fff;
+  padding: 0.5em 0.25em 0.5em 1em;
+  box-shadow: 0px 0px 15px #333;
+  position: fixed;
+  width: 100%;
+  top: 0px;
+  z-index: 999;
+}
+
+#site-notice.hide {
+  height: 0px;
+  overflow: hidden;
+}
+
+#site-notice .button--close-notice {
+  float: right;
+  color: black;
+  font-size: 18px;
+  background: #fff;
+  padding: 5px 8px 5px 10px;
+  margin: 5px 5px 0 0;
+  text-align: center;
+}
+
+#site-notice .button--close-notice:hover {
+  background: #F0F0F0;
+}
+
+#notice-complete-profile {
+}
+
+#notice-complete-profile label {
+  display: block;
+  font-weight: bold;
+}
+
+#notice-complete-profile .checkbox label {
+  font-weight: normal;
+}
+
+#notice-complete-profile form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+#notice-complete-profile form select {
+  height: 40px;
+}
+
+@media screen and (min-width: 992px){
+  #notice-complete-profile form {
+    display: flex;
+    flex-direction: row;
+  }
+
+  #notice-complete-profile .complete-section {
+    margin: 0 1em;
+  }
+
+  #notice-complete-profile .complete-section.section-save {
+    padding-top: 1em;
+  }
+}

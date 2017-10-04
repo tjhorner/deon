@@ -339,6 +339,10 @@ h1 + .panel.md-container,
   letter-spacing: 2px;
 }
 
+body.showing-notice .controls.fixed.playing {
+  top: attr(noticeTop);
+}
+
 .controls {
   width: 100%;
   justify-content: center;
