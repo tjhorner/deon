@@ -237,6 +237,7 @@ function updateBestOf2017Results () {
     });
 
     //Update vote and rank text and CSS classes
+    var missingRanks = 0;
     results.forEach(function (result, index) {
       var rank = result.rank;
       var sel = '.bestof2017-result[artist-id="' + result.artistId + '"]';
@@ -244,11 +245,12 @@ function updateBestOf2017Results () {
 
       if(!el) {
         console.log('Artist not found: ' + result.artistId)
+        missingRanks++;
         return;
       }
 
       var cls = el.getAttribute('class');
-      var rank = index + 1;
+      var rank = index + 1 - missingRanks;
       cls = cls.replace(/rank-[0-9]+/, '')
       cls += ' rank-' + rank;
       el.setAttribute('class', cls);
@@ -616,7 +618,14 @@ function completedBestOf2017 () {
             return '<option value="' + track._id + '">' + track.title + ' by ' + track.artistsTitle + '</option>'
           });
 
-          songEl.innerHTML = '<option value=0>select a song</option>' + options;
+          if(options.length > 1) {
+            songEl.innerHTML = '<option value=0>select a song</option>' + options;
+
+          }
+          else {
+            songEl.innerHTML = options;
+          }
+
           songEl.disabled = false
         });
       });
@@ -650,6 +659,7 @@ function clickSubmitBestOf2017 (e) {
   var dupe = false;
   var songVotes = {};
   var pollVotes = [];
+  var missingSongVotes = [];
   var artistVotes = Object.keys(data.artist).reduce(function (list, index) {
     if(data.artist[index] && data.artist[index] != "-1") {
       var artistId = data.artist[index];
@@ -662,19 +672,26 @@ function clickSubmitBestOf2017 (e) {
       else {
         //We vote with the index of the choice, so find this artist's id in the choices of the poll
         list.push(artistPollChoices.indexOf(artistId));
+        var artist =  transformBestOf2017.artistAtlas[artistId];
 
         //Only add their song vote if they've picked something
         if(data.artistSongs[index] && data.artistSongs[index] != "0") {
-          var artist =  transformBestOf2017.artistAtlas[artistId];
           pollVotes.push({
             pollId: artist.pollId,
             choices: [artist.pollChoices.indexOf(data.artistSongs[index])]
           });
         }
+        else {
+          missingSongVotes.push(artist.name);
+        }
       }
     }
     return list
   }, []);
+
+  if(missingSongVotes.length) {
+    return toasty(new Error('Please select your favorite song' + (missingSongVotes.length == 1 ? '' : 's') + ' for ' + commaAnd(missingSongVotes) + '.'))
+  }
 
   if (artistVotes.length == 0) {
     if(dupe) {

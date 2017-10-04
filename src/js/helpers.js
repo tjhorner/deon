@@ -301,6 +301,18 @@ function getMonths () {
   return ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']  
 }
 
+function commaAnd (list, and) {
+  and = and || ' and ';
+  if (list.length > 2) {
+    var last = list.slice(list.length - 1, list.length);
+    var start = list.slice(0, list.length - 1);
+    return start.join(', ') + ',' + and + last;
+  }
+  else {
+    return list.join(and)
+  }
+}
+
 /* Vendor Helpers */
 
 function serviceUrlToChannelId (user) {
