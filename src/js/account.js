@@ -1,5 +1,36 @@
+function transformSubmittedAccountData (data) {
+  var str = data.birthday_year + '-' + data.birthday_month + '-' + data.birthday_day;
+  if(!data.birthday_year || data.birthday_year <= 1900) {
+    data.birthday = null;
+  }
+  else {
+    data.birthday = new Date(str);
+  }
+  delete data.birthday_day;
+  delete data.birthday_month;
+  delete data.birthday_year;
+  return data;
+}
+
+function validateAccountData (data, exclude) {
+  exclude = exclude || {};
+  var errors = [];
+  if(!exclude.birthday) {
+    if(!data.birthday || data.birthday.toString() == 'Invalid Date') {
+      errors.push('Invalid birthday entered');
+    }
+  }
+  if(!exclude.location) {
+    if(!data.googleMapsPlaceId) {
+      errors.push('Location is required');
+    }
+  }
+  return errors;
+}
+
 function saveAccount (e, el) {
   var data = getTargetDataSet(el, true, true)
+  data = transformSubmittedAccountData(data);
   if (!data) return
   var wasLegacy = isLegacyLocation()
   update('self', null, data, function (err, obj) {
@@ -113,6 +144,13 @@ function mapAccount (o) {
   else if(o.twoFactorId) {
     o.twoFactor = true
   }
+  if(o.birthday) {
+    var date = new Date(o.birthday);
+    o.birthday_year = date.getUTCFullYear();
+    o.birthday_day = ('0' + (date.getUTCDate()).toString()).substr(-2);
+    o.birthday_month = ('0' + (date.getUTCMonth() + 1).toString()).substr(-2);
+  }
+  console.log('o',o);
   o.hasGoldAccess = hasGoldAccess()
   o.endhost = endhost
   o.shopEmail = session.user.shopEmail ? session.user.shopEmail : session.user.email
@@ -131,6 +169,7 @@ function transformEmailOptins (optinsArray) {
 
 function completedAccount () {
   scrollToHighlightHash()
+  hookValueSelects();
   initLocationAutoComplete()
 }
 

@@ -93,11 +93,6 @@ function stickyPlayer(){
   var el = document.querySelector("[role='fixed']")
   window.addEventListener('scroll', function(){
     if(window.scrollY >= threshold) {
-      if (document.body.classList.contains('showing-notice')) {
-        var noticeEl = document.querySelector('#site-notice');
-        var height = noticeEl.getBoundingClientRect().height
-        el.style.top = height + 'px';
-      }
       el.classList.add('fixed');
     }
     else {

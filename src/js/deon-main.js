@@ -97,6 +97,14 @@ function isSignedIn () {
   return !!(session && session.user)
 }
 
+function hasCompletedProfile () {
+  if(!isSignedIn()) {
+    return false
+  }
+  var user = session.user;
+  return !(!user.birthday || !user.emailOptIns || user.emailOptIns.length < 3 || !user.geoLocation);
+}
+
 function isLegacyUser () {
   if (!isSignedIn()) return false
   var user = session.user

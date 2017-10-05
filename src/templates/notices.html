@@ -2,22 +2,30 @@
         template-name="notice-complete-profile">
 <div id="notice-complete-profile">
   <button onclick="closeCompleteProfileNotice(event)" type="button" class="button button--close-notice"><i class="fa fa-remove"></i></button>
-  <h4>Please Complete Your Profile</h4>
-  <form onsubmit="submitCompleteProfile(event)">
-    <div class="complete-section">
-      <label>Location</label>
-      {{>location-autocomplete}}
+  <form onsubmit="submitCompleteProfile(event)" role="complete-profile-form">
+    <div class="complete-section section-title">
+      Please Complete Your Profile
     </div>
-    <div class="complete-section">
-      <label>Birthday</label>
-      {{>birthday-fields}}
-    </div>
-    <div class="complete-section">
-      <label>Email me about</label>
-      {{>account-email-optin-news}}
-      {{>account-email-optin-events}}
-      {{>account-email-optin-merch}}
-    </div>
+    {{#sections.location}}
+      <div class="complete-section">
+        <label>Location</label>
+        {{>location-autocomplete}}
+      </div>
+    {{/sections.location}}
+    {{#sections.birthday}}
+      <div class="complete-section">
+        <label>Birthday</label>
+        {{>birthday-fields}}
+      </div>
+    {{/sections.birthday}}
+    {{#sections.emails}}
+      <div class="complete-section">
+        <label>Email me about</label>
+        {{>account-email-optin-news}}
+        {{>account-email-optin-events}}
+        {{>account-email-optin-merch}}
+      </div>
+    {{/sections.emails}}
     <div class="complete-section section-save">
       <button class="button button--white">Save</button>
     </div>
