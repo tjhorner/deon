@@ -4,12 +4,12 @@ function SiteNotice (args) {
   for(var k in args) {
     this[k] = args[k];
   }
-  console.log('this',this);
 }
 
 SiteNotice.prototype.start = function () {
   var scope = {};
   if(!this.shouldOpen() || !this.cookieExpired()) {
+    this.close();
     return
   }
   this.transform(function (err, result) {
@@ -24,7 +24,6 @@ SiteNotice.prototype.getCookieName = function () {
 
 SiteNotice.prototype.cookieExpired = function () {
   var iso = getCookie(this.getCookieName());
-  console.log('iso', iso);
   if(!iso || !iso.length) {
     return true
   }
@@ -48,8 +47,18 @@ SiteNotice.prototype.close = function () {
   document.body.classList.toggle('showing-notice', true);
   var noticeEl = document.querySelector('#site-notice');
   noticeEl.classList.toggle('hide', true);
+}
+
+//When a user closes it instead of our code
+//This also sets a cookie to hide the notice for a time
+SiteNotice.prototype.closeByUser = function () {
+  this.close();
   var hideUntil = new Date(new Date().getTime() + (this.hideForDays * 24 * 60 * 60 * 1000));
   setCookie(this.getCookieName(), hideUntil.toISOString());
+}
+
+SiteNotice.prototype.expireCookie = function () {
+  setCookie(this.getCookieName(), new Date().toISOString());
 }
 
 /*========================================
@@ -70,7 +79,7 @@ var completeProfileNotice = new SiteNotice({
     done(null, obj);
   },
   shouldOpen: function () {
-    return window.location.pathname != '/account' && isSignedIn() && !hasCompletedProfile() //TODO: && doesn't have a complete profile && han't closed this
+    return isSignedIn() && !hasCompletedProfile()
   },
   completed: function () {
     initLocationAutoComplete()
@@ -78,7 +87,7 @@ var completeProfileNotice = new SiteNotice({
 });
 
 function closeCompleteProfileNotice (e) {
-  completeProfileNotice.close();
+  completeProfileNotice.closeByUser();
 }
 
 function submitCompleteProfile (e) {
@@ -86,13 +95,11 @@ function submitCompleteProfile (e) {
   var form = e.target;
   var data = getDataSet(document.querySelector("[role=complete-profile-form]"), true, true);
   data = transformSubmittedAccountData(data);
-  console.log('data', data);
   var exclude = {
     birthday: !!session.user.birthday,
     location: !!session.user.geoLocation
   }
   var errors = validateAccountData(data, exclude);
-  console.log('errors', errors);
   if(errors.length) {
     errors.forEach(function (er) {
       toasty(new Error(er));

@@ -16,7 +16,7 @@ function validateAccountData (data, exclude) {
   exclude = exclude || {};
   var errors = [];
   if(!exclude.birthday) {
-    if(!data.birthday || data.birthday.toString() == 'Invalid Date') {
+    if(!data.birthday || data.birthday.toString() == 'Invalid Date' || data.birthday.getFullYear() < 1900 || data.birthday.getFullYear() > new Date().getFullYear()) {
       errors.push('Invalid birthday entered');
     }
   }
@@ -33,6 +33,13 @@ function saveAccount (e, el) {
   data = transformSubmittedAccountData(data);
   if (!data) return
   var wasLegacy = isLegacyLocation()
+  var errors = validateAccountData(data);
+  if(errors.length > 0) {
+    errors.forEach(function (err) {
+      toasty(new Error(err));
+    })
+    return
+  }
   update('self', null, data, function (err, obj) {
     if (err) return window.alert(err.message)
     toasty(strings.accountUpdated)
@@ -42,6 +49,7 @@ function saveAccount (e, el) {
       if(wasLegacy && !isLegacyLocation()) {
         reloadPage()
       }
+      completeProfileNotice.start();
     })
   })
 }
@@ -150,7 +158,6 @@ function mapAccount (o) {
     o.birthday_day = ('0' + (date.getUTCDate()).toString()).substr(-2);
     o.birthday_month = ('0' + (date.getUTCMonth() + 1).toString()).substr(-2);
   }
-  console.log('o',o);
   o.hasGoldAccess = hasGoldAccess()
   o.endhost = endhost
   o.shopEmail = session.user.shopEmail ? session.user.shopEmail : session.user.email

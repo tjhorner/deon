@@ -32,8 +32,13 @@ table.form select{
 }
 
 table.form select.birthday-month,
-table.form select.birthday-day {
+table.form select.birthday-day,
+select.birthday-month,
+select.birthday-day {
   width: auto;
+  height: 40px;
+  top: -2px;
+  position: relative;;
 }
 
 table.form th {

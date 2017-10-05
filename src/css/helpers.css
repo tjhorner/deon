@@ -469,12 +469,6 @@ ul.errors li {
   justify-content: center;
 }
 
-#notice-complete-profile form select {
-  height: 40px;
-  top: -2px;
-  position: relative;;
-}
-
 @media screen and (min-width: 992px){
   #notice-complete-profile form {
     display: flex;

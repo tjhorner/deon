@@ -6,6 +6,10 @@ function transformRedirectTo (obj) {
 }
 
 function transformSignIn (o) {
+  if(isSignedIn()) {
+    toasty('You are already logged in');
+    return go('/account');
+  }
   o = transformRedirectTo(o)
   o.buying = getSignInBuying()
   trackSignUpEvents();
@@ -67,6 +71,7 @@ function onSignIn(done) {
     trackUser()
     renderHeader()
     renderHeaderMobile()
+    completeProfileNotice.start();
     done();
   })
 }
@@ -82,6 +87,7 @@ function signOut (e, el) {
     untrackUser()
     renderHeader()
     renderHeaderMobile()
+    completeProfileNotice.close();
     go("/")
   })
 }
@@ -141,6 +147,7 @@ function signUp (data, where, done) {
 
 function signUpAt (e, el, where) {
   var data = getTargetDataSet(el);
+  data = transformSubmittedAccountData(data);
   signUp(data, where, function (err, obj, xhr) {
     if (err) return window.alert(err.message)
     go(getRedirectTo())
@@ -148,9 +155,13 @@ function signUpAt (e, el, where) {
 }
 
 function validateSignUp (data) {
-  if(!data.googleMapsPlaceId) {
-    alert('Please enter your location')
-    return
+  var errors = validateAccountData(data);
+
+  if(errors.length) {
+    errors.forEach(function (err) {
+      toasty(new Error(err));
+    })
+    return false
   }
 
   return true
@@ -158,6 +169,7 @@ function validateSignUp (data) {
 
 function submitSignUp (e, el) {
   var data = getTargetDataSet(el)
+  data = transformSubmittedAccountData(data);
   if(!validateSignUp(data)) return
   signUpAt(e, el, '/signup')
 }
@@ -185,6 +197,11 @@ function getSignInBuying () {
 function transformSignUp () {
   var redirectTo = getRedirectTo()
   var buying = getSignInBuying()
+
+  if(isSignedIn()) {
+    toasty('You are already logged in');
+    return go('/account');
+  }
 
   obj = {
     countries: getAccountCountries(),
