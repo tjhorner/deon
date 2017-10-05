@@ -66,7 +66,7 @@ SiteNotice.prototype.expireCookie = function () {
 ========================================*/
 
 var completeProfileNotice = new SiteNotice({
-  hideForDays: 0, //TODO: Set to number of days to hide
+  hideForDays: 1, //TODO: Set to number of days to hide
   name: 'complete-profile',
   template: 'notice-complete-profile',
   transform: function (done) {

@@ -3,18 +3,15 @@
 <div id="notice-complete-profile">
   <button onclick="closeCompleteProfileNotice(event)" type="button" class="button button--close-notice"><i class="fa fa-remove"></i></button>
   <form onsubmit="submitCompleteProfile(event)" role="complete-profile-form">
-    <div class="complete-section section-title">
-      Please Complete Your Profile
-    </div>
     {{#sections.location}}
       <div class="complete-section">
-        <label>Location</label>
+        <label>Your Location</label>
         {{>location-autocomplete}}
       </div>
     {{/sections.location}}
     {{#sections.birthday}}
       <div class="complete-section">
-        <label>Birthday</label>
+        <label>Your Birthday</label>
         {{>birthday-fields}}
       </div>
     {{/sections.birthday}}

@@ -467,7 +467,25 @@ ul.errors li {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: center;
 }
+
+#notice-complete-profile .complete-section.section-title {
+  font-weight: bold;
+}
+
+#notice-complete-profile .complete-section {
+  margin-bottom: 1em;
+  width: 100%;
+}
+
+@media screen and (min-width: 500px){
+  #notice-complete-profile .complete-section {
+    width: 230px;
+  }
+}
+
+
 
 @media screen and (min-width: 992px){
   #notice-complete-profile form {
@@ -476,12 +494,14 @@ ul.errors li {
   }
 
   #notice-complete-profile .complete-section {
+    width: auto;
     margin: 0 1em;
   }
 
   #notice-complete-profile .complete-section.section-title {
     align-self: center;
     margin-right: 0px;
+    padding-top: 1em;
   }
 
   #notice-complete-profile .complete-section.section-save {

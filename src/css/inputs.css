@@ -455,6 +455,12 @@ label[for] {
     padding: 1rem;
     height: 55px;
   }
+
+  table.form.mobile select.birthday-month,
+  table.form.mobile select.birthday-day{
+    margin-bottom: 0.25em;
+  }
+
   .button-group{
     font-size: 0;
   }
