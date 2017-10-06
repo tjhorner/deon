@@ -28,6 +28,10 @@ form input[type=password]  {
   transition: border-color .3s ease;
 }
 
+.form-group > div > input {
+  width: 100%;
+}
+
 table.form select{
   width: 220px;
 }
@@ -40,6 +44,11 @@ select.birthday-day {
   height: 40px;
   top: -2px;
   position: relative;;
+}
+
+input.birthday-year,
+.form-group > div > input.birthday-year {
+  width: auto;
 }
 
 table.form th {
@@ -446,7 +455,7 @@ label[for] {
     position: relative;
   }
 
-  table.form.mobile td > input{
+  table.form.mobile td > input {
     width: 100%;
     max-width: initial;
     background: #eee;

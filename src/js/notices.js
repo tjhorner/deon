@@ -38,6 +38,7 @@ SiteNotice.prototype.render = function (scope) {
   noticeEl.classList.toggle('hide', false);
   var height = noticeEl.getBoundingClientRect().height
   document.body.classList.toggle('showing-notice', true);
+  noticeEl.classList.toggle(this.name, true);
   if(this.completed) {
     this.completed();
   }
@@ -47,6 +48,7 @@ SiteNotice.prototype.close = function () {
   document.body.classList.toggle('showing-notice', true);
   var noticeEl = document.querySelector('#site-notice');
   noticeEl.classList.toggle('hide', true);
+  noticeEl.classList.toggle(this.name, false);
 }
 
 //When a user closes it instead of our code
@@ -71,18 +73,12 @@ var completeProfileNotice = new SiteNotice({
   template: 'notice-complete-profile',
   transform: function (done) {
     var obj = {};
-    obj.sections = {
-      birthday: !session.user.birthday,
-      emails: !session.user.emailOptIns || session.user.emailOptIns.length < 3,
-      location: !session.user.geoLocation
-    }
     done(null, obj);
   },
   shouldOpen: function () {
     return isSignedIn() && !hasCompletedProfile()
   },
   completed: function () {
-    initLocationAutoComplete()
   }
 });
 
@@ -93,6 +89,14 @@ function closeCompleteProfileNotice (e) {
 function submitCompleteProfile (e) {
   e.preventDefault();
   var form = e.target;
+  var button = form.querySelector('button.button--cta');
+
+  function resetButton () {
+    button.innerHTML = 'Save';
+    button.disabled = false;
+    form.disabled = false;
+  }
+
   var data = getDataSet(document.querySelector("[role=complete-profile-form]"), true, true);
   data = transformSubmittedAccountData(data);
   var exclude = {
@@ -111,11 +115,28 @@ function submitCompleteProfile (e) {
     delete data.birthday
   }
 
+  button.disabled = true;
+  button.innerHTML = 'Submitting...'
+  form.disabled = true;
+
   update('self', null, data, function (err, obj) {
+    resetButton();
     if (err) return toasty(new Error(err.message));
     toasty('Profile complete, thank you!')
     completeProfileNotice.close();
+    closeModal();
     renderHeader()
     renderHeaderMobile()
   })
+}
+
+function clickCompleteProfile (e) {
+  var obj = {};
+  obj.sections = {
+    birthday: !session.user.birthday,
+    emails: !session.user.emailOptIns || session.user.emailOptIns.length < 3,
+    location: !session.user.geoLocation
+  }
+  openModal('complete-profile-modal', obj);
+  initLocationAutoComplete();
 }

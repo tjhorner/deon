@@ -424,7 +424,6 @@ ul.errors li {
   background: dodgerblue;
   color: #fff;
   padding: 1em 0;
-  box-shadow: 0px 0px 15px #333;
   width: 100%;
   top: 0px;
   z-index: 999;
@@ -449,62 +448,56 @@ ul.errors li {
   background: #F0F0F0;
 }
 
-#notice-complete-profile {
+#site-notice.complete-profile {
+  text-align: center;
+  cursor: pointer;
+  padding: 0px;
 }
 
-#notice-complete-profile label {
+#notice-complete-profile {
+  padding: 1.25em 1em 1em;
+}
+
+#complete-profile-modal label {
   display: block;
   font-weight: bold;
   margin-bottom: 0.25em;
 }
 
-#notice-complete-profile .checkbox label {
+#complete-profile-modal button.button--cta {
+  width: 100%;
+  margin-top: 2em;
+}
+
+#complete-profile-modal .checkbox label {
   font-weight: normal;
   margin-bottom: 0px;
 }
 
-#notice-complete-profile form {
-  display: flex;
-  flex-direction: column;
-  justify-content: left;
-  align-items: top;
-}
-
-#notice-complete-profile .complete-section.section-title {
-  font-weight: bold;
-}
-
-#notice-complete-profile .complete-section {
+#complete-profile-modal .complete-section {
   margin-bottom: 1em;
   width: 100%;
 }
 
-@media screen and (min-width: 500px){
-  #notice-complete-profile .complete-section {
-    width: 230px;
-  }
+.modal.modal--complete-profile {
+  max-width: 550px;
 }
 
+.modal.modal--complete-profile .modal-content {
+  margin-bottom: 0px;
+}
 
-
-@media screen and (min-width: 992px){
-  #notice-complete-profile form {
-    display: flex;
-    flex-direction: row;
+@media screen and (min-width: 992px) {
+  #complete-profile-modal .form-group label {
+    line-height: 40px;
+    margin-bottom: 0px;
   }
 
-  #notice-complete-profile .complete-section {
-    width: auto;
-    margin: 0 1em 0 0;
+  #complete-profile-modal .form-group .checkbox label {
+    line-height: 1.4;
   }
 
-  #notice-complete-profile .complete-section.section-title {
-    align-self: center;
-    margin-right: 0px;
-    padding-top: 1em;
-  }
-
-  #notice-complete-profile .complete-section.section-save {
-    padding-top: 1em;
+  #complete-profile-modal .complete-profile-subscribe label {
+    line-height: 1.5;
   }
 }
