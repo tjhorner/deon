@@ -423,7 +423,7 @@ ul.errors li {
   height: auto;
   background: dodgerblue;
   color: #fff;
-  padding: 0.75em 0.25em 0.75em 1em;
+  padding: 1em 0;
   box-shadow: 0px 0px 15px #333;
   width: 100%;
   top: 0px;
@@ -466,8 +466,8 @@ ul.errors li {
 #notice-complete-profile form {
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  justify-content: left;
+  align-items: top;
 }
 
 #notice-complete-profile .complete-section.section-title {
@@ -495,7 +495,7 @@ ul.errors li {
 
   #notice-complete-profile .complete-section {
     width: auto;
-    margin: 0 1em;
+    margin: 0 1em 0 0;
   }
 
   #notice-complete-profile .complete-section.section-title {

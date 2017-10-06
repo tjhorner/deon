@@ -1,31 +1,33 @@
 <script type="text/template"
         template-name="notice-complete-profile">
 <div id="notice-complete-profile">
-  <button onclick="closeCompleteProfileNotice(event)" type="button" class="button button--close-notice"><i class="fa fa-remove"></i></button>
-  <form onsubmit="submitCompleteProfile(event)" role="complete-profile-form">
-    {{#sections.location}}
-      <div class="complete-section">
-        <label>Your Location</label>
-        {{>location-autocomplete}}
+  <div class="container">
+    <button onclick="closeCompleteProfileNotice(event)" type="button" class="button button--close-notice"><i class="fa fa-remove"></i></button>
+    <form onsubmit="submitCompleteProfile(event)" role="complete-profile-form">
+      {{#sections.location}}
+        <div class="complete-section">
+          <label>Your Location</label>
+          {{>location-autocomplete}}
+        </div>
+      {{/sections.location}}
+      {{#sections.birthday}}
+        <div class="complete-section">
+          <label>Your Birthday</label>
+          {{>birthday-fields}}
+        </div>
+      {{/sections.birthday}}
+      {{#sections.emails}}
+        <div class="complete-section">
+          <label>Subscribe to</label>
+          {{>account-email-optin-news}}
+          {{>account-email-optin-events}}
+          {{>account-email-optin-merch}}
+        </div>
+      {{/sections.emails}}
+      <div class="complete-section section-save">
+        <button class="button button--white">Save</button>
       </div>
-    {{/sections.location}}
-    {{#sections.birthday}}
-      <div class="complete-section">
-        <label>Your Birthday</label>
-        {{>birthday-fields}}
-      </div>
-    {{/sections.birthday}}
-    {{#sections.emails}}
-      <div class="complete-section">
-        <label>Email me about</label>
-        {{>account-email-optin-news}}
-        {{>account-email-optin-events}}
-        {{>account-email-optin-merch}}
-      </div>
-    {{/sections.emails}}
-    <div class="complete-section section-save">
-      <button class="button button--white">Save</button>
-    </div>
-  </form>
+    </form>
+  </div>
 </div>
 </script>
