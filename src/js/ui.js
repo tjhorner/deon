@@ -97,7 +97,6 @@ function stickyPlayer(){
     }
     else {
       el.classList.remove('fixed')
-      el.setAttribute('style', '');
     }
   })
 }
