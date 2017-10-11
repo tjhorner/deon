@@ -131,7 +131,7 @@ function transformPlaylistTracks (obj, done) {
     getArtistsAtlas(obj.results, function (err, artistAtlas) {
       if (!artistAtlas) artistAtlas = {}
       obj.results = obj.results.map(function (item, index, arr) {
-        var track = mapReleaseTrack(trackAtlas[item._id] || {}, index, arr)
+        var track = mapReleaseTrack(trackAtlas[item._id] || {}, index)
         var release = releaseAtlas[item.release._id] || {}
         track.releaseTitle = release.title
         track.releaseId = release._id
@@ -165,7 +165,7 @@ function transformPlaylistTracks (obj, done) {
 function completedPlaylist (source, obj) {
   if(obj.error) return
   var pl = obj.data
-  setPageTitle(pl.name + pageTitleGlue + 'Playlist')  
+  setPageTitle(pl.name + pageTitleGlue + 'Playlist')
   setMetaData({
     'og:type': 'music.playlist',
     'og:title': pl.name,
