@@ -65,14 +65,18 @@ function addToPlaylist (e, el) {
 }
 
 function togglePlaylistPublic (e, el) {
+  var pub = el.checked;
   el.disabled = true
   update('playlist', el.getAttribute('playlist-id'), {
-    public: !!el.checked
+    public: pub
   }, function (err, obj) {
     el.disabled = false
-    if (!err) return
-    window.alert(err.message)
-    el.checked = !el.checked
+    if (err) {
+      toasty(new Error(err.message))
+      return
+    }
+    toasty('Playlist is now ' + (pub ? 'public' : 'private'));
+    el.checked = pub
   })
 }
 
