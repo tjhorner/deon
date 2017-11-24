@@ -8,7 +8,6 @@ window.testlogs = function () {
   console.log('='.repeat(40));
 }
 function SplitTest (opts) {
-  //console.log('opts', opts)
   this.alts = []
   this.checkStarterTimeout = null
   this.started = false
@@ -56,7 +55,6 @@ SplitTest.prototype.checkStarter = function () {
   clearTimeout(this.checkStarterTimeout)
   if(this.checkStart()) {
     if(!this.started) {
-      window.splittestlog.push('STARTING TEST: "' + this.name + '"')
       this.start()
     }
   }
@@ -69,20 +67,34 @@ SplitTest.prototype.checkStarter = function () {
 }
 
 SplitTest.prototype.start = function () {
+  if(!this.started) {
+    window.splittestlog.push('STARTING TEST: "' + this.name + '" for ' + sixPackSession.client_id)
+  }
   this.started = true
-  sixPackSession.participate(this.name, this.alts, function (err, res) {
+
+  this.participate(function (err, res) {
     if (err) throw err;
     alt = res.alternative.name
     if(this.modifiers.hasOwnProperty(alt)) {
-      window.splittestlog.push('Running alt "' + alt + '"" for "' + this.name + '"')
-      this.modifiers[alt](this)
+      window.splittestlog.push('Running alt "' + alt + '" for "' + this.name + '"')
+      var altData = this.modifiers[alt].bind(this)(this);
       this.alt = alt
-      this.onStarted(alt)
+      this.onStarted(alt, altData)
     }
     else {
       throw new Error('No modifier found for alt "'  + alt + '"')
     }
   }.bind(this));
+}
+
+SplitTest.prototype.participate = function (done) {
+  if(this.force) {
+    window.splittestlog.push('Forcing ' + this.name + ' to use ' + this.force);
+    sixPackSession.participate(this.name, this.alts, this.force, done);
+  }
+  else {
+    sixPackSession.participate(this.name, this.alts, done);
+  }
 }
 
 SplitTest.prototype.convert = function () {
@@ -94,10 +106,10 @@ SplitTest.prototype.convertKpi = function (kpi) {
 }
 
 function splitTestConvert (name) {
-  window.splittestlog.push('Convert for "' + name + '"')
+  window.splittestlog.push('Convert for "' + name + '" for ' + sixPackSession.client_id)
   sixPackSession.convert(name, function (err, res) {
     if (err) throw err
-    window.splittestlog.push('Convert res', res)
+    window.splittestlog.push('Response for converting "' + name + '"', res)
   })
 }
 
@@ -105,6 +117,6 @@ function splitTestConvertKpi (name, kpi) {
   window.splittestlog.push('Convert for "' + name + '" with kpi "' + kpi + '"')
   sixPackSession.convert(name, kpi, function (err, res) {
     if (err) throw err
-    window.splittestlog.push('Convert res', res)
+    window.splittestlog.push('Response for KPI converting "' + name + '" / "' + kpi + '"', res)
   })
 }

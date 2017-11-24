@@ -15,14 +15,7 @@ document.addEventListener("DOMContentLoaded", function (e) {
   initSocials()
   renderHeader()
   loadSession(function (err, obj) {
-    if(obj && obj.user) {
-      sixPackSession = new sixpack.Session({
-        client_id: obj.user._id
-      });
-    }
-    else {
-      sixPackSession  = new sixpack.Session();
-    }
+    sixPackSession  = new sixpack.Session();
     trackUser()
     renderHeader()
     renderHeaderMobile()
@@ -52,6 +45,7 @@ document.addEventListener("DOMContentLoaded", function (e) {
     });
     stateChange(location.pathname + location.search)
     stickyPlayer()
+    completeProfileNotice.start();
   })
 })
 
@@ -94,6 +88,14 @@ function pageIsReady () {
 
 function isSignedIn () {
   return !!(session && session.user)
+}
+
+function hasCompletedProfile () {
+  if(!isSignedIn()) {
+    return false
+  }
+  var user = session.user;
+  return !(!user.birthday || !user.emailOptIns || user.emailOptIns.length < 3 || !user.geoLocation);
 }
 
 function isLegacyUser () {
@@ -458,7 +460,7 @@ function getDownloadLink (releaseId, trackId) {
 }
 
 function getGetGoldLink () {
-  return '/account/services?ref=gold'
+  return '/gold/get'
 }
 
 function updatePlayerPlaylist (playlistId, ptracks) {
@@ -594,11 +596,14 @@ function youTubeIdParser(url){
  * Should conform to the array map method parameters.
  */
 
-function mapReleaseTrack (o, index) {
+function mapReleaseTrack (o, index, trackNumber) {
   if(!o) {
     return {}
   }
-  o.trackNumber = index + 1
+  if(arguments.length < 3) {
+    trackNumber = index + 1
+  }
+  o.trackNumber = trackNumber
   o.index       = index
   o.canPlaylist = isSignedIn() && !o.inEarlyAccess && o.streamable ? { _id: o._id } : null
   o.bpm         = Math.round(o.bpm)
@@ -690,9 +695,7 @@ function transformPodcast (obj) {
 }
 
 function transformMerch (obj) {
-  var products = obj
-  obj = {}
-  obj.products = products.slice(0,8)
+  obj.products = obj.products.slice(0,8)
   return obj
 }
 
@@ -796,122 +799,13 @@ function transformServices (obj, done) {
       transformServices.scope.user.humble = true
     }
 
-    //People who aren't signed in will participate in this test, otherwise they get the vanilla page
     if(!isSignedIn()) {
-      servicesSignUpTest.onStarted = function () {
-        transformServices.scope.showSignUp = transformServices.scope.onpageSignUp && !isSignedIn();
-        done(null, transformServices.scope);
-      };
-      servicesSignUpTest.start();
+      transformServices.scope.onpageSignUp = true;
+      transformServices.scope.signUpRedirect = false;
+      transformServices.scope.showSignUp = transformServices.scope.onpageSignUp && !isSignedIn();
     }
-    else {
-      done(null, transformServices.scope);
-    }
+    done(null, transformServices.scope);
   });
-}
-
-function transformGoldSubscription (obj) {
-  var nobj = {
-    nextBillingDate: formatDate(obj.availableUntil),
-  }
-  if (!obj.subscriptionActive) {
-    nobj.canceled = true;
-    nobj.endDate = formatDate(obj.availableUntil);
-  }
-  else{
-    nobj.canceled = false;
-  }
-  return nobj
-}
-
-function transformGoldLanding (obj, done) {
-  obj = obj || {}
-  var featureBlocks = []
-  featureBlocks.push({
-    id: 'download-access',
-    title: 'Download Access',
-    description: 'Download tracks in MP3, FLAC, and WAV format.',
-    image: '1-DownloadAccess-v2.jpg',
-    cta: 'Download Music',
-    download: true
-  }, {
-    id: 'early-streaming',
-    title: 'Early Streaming Access',
-    description: 'Listen to releases on Monstercat.com 20 hours before they are released to everyone else.',
-    cta: 'Listen Early',
-    image: '2-StreamingAccess.jpg',
-  }, {
-    id: 'support-the-artists',
-    title: 'Support the Artists',
-    description: 'Artists are paid out from Gold subscriptions based on how much people listen to their songs.',
-    cta: 'Support the Artists',
-    image: '3-SupportArtists.jpg',
-  }, {
-    id: 'discord',
-    title: 'Gold-only Discord Chat',
-    description: 'Come chat with us and other superfans in our Discord server.',
-    cta: 'Join the Chat',
-    image: '5-Discord.jpg',
-    discord: true
-  }, {
-    id: 'reddit',
-    title: 'Subreddit Flair on /r/Monstercat',
-    description: 'Show your bling off in the Monstercat subreddit.',
-    cta: 'Get Your Flair',
-    image: '6-Reddit.png',
-    reddit: true
-  })
-  featureBlocks = featureBlocks.map(function (i, index) {
-    i.isOdd = !(index % 2 == 0)
-    return i
-  })
-  obj.featureBlocks = featureBlocks
-  obj.hasGoldAccess = hasGoldAccess()
-  obj.sessionName = getSessionName()
-  obj.getGoldUrl = getGetGoldLink()
-
-  if(obj.hasGoldAccess) {
-    obj.redditUsername = session.user.redditUsername
-  }
-  else {
-    obj.redditUsername = false
-  }
-
-  var test = new SplitTest({
-    name: 'gold-landing-custom-cta',
-    checkStart: false,
-    modifiers: {
-      'default': function () {
-        obj.featureBlocks = obj.featureBlocks.map(function (block) {
-          block.cta = 'Get Gold';
-          return block;
-        });
-      },
-      'custom-ctas': function () {
-      }
-    },
-    onStarted: function (alt) {
-      done(null, obj);
-    }
-  });
-  transformGoldLanding.test = test;
-  test.start();
-}
-
-function completedGoldLanding () {
-  if(transformGoldLanding.test) {
-    document.querySelectorAll('a[test-kpi]').forEach(function (el) {
-      el.addEventListener('click', function (e) {
-        var t = e.target;
-        if(!t) return
-        var kpi = t.getAttribute('test-kpi');
-        if(kpi) {
-          transformGoldLanding.test.convertKpi(kpi);
-          transformGoldLanding.test.convert();
-        }
-      })
-    })
-  }
 }
 
 function transformMusic () {
@@ -973,6 +867,13 @@ function scrollToAnimated (el, opts) {
   animatedScrollTo(document.body, top + padding, duration)
 }
 
+function scrollToEl (el, opts) {
+  opts = opts || {}
+  var padding = opts.padding || -20
+  var top = el.getBoundingClientRect().top
+  window.scrollTo(0, top+padding);
+}
+
 function anchorScrollTo (e, el) {
   e.preventDefault()
   scrollToAnimated(document.querySelector(el.getAttribute('href')))
@@ -1031,24 +932,24 @@ function transformWhitelists (obj) {
 }
 
 function transformReleaseTracks (obj, done) {
-  var h1 = document.querySelector('h1[release-id]')
-  var releaseId = h1 ? h1.getAttribute('release-id') : ''
+  var input = document.querySelector('input[role=release-id][release-id]')
+  var releaseId = input ? input.getAttribute('release-id') : ''
+
   getArtistsAtlas(obj.results, function (err, atlas) {
     if (!atlas) atlas = {}
-    var num = -1;
+    var trackIndex = 0;
     obj.results.forEach(function (track, index, arr) {
       track.playUrl = getPlayUrl(track.albums, releaseId)
+      mapReleaseTrack(track, trackIndex, index+1)
       if(track.playUrl) {
-        num++;
+        trackIndex++
       }
-      mapReleaseTrack(track, num, arr)
       track.releaseId = releaseId
       track.artists = mapTrackArtists(track, atlas)
       track.downloadLink = getDownloadLink(releaseId, track._id)
       track.time = formatDuration(track.duration)
     })
     obj.hasGoldAccess = hasGoldAccess()
-    
     obj.shopifyEmbeds = []
     var artistsCount = 0
 
@@ -1170,7 +1071,9 @@ function completedReleaseTracks (source, obj) {
   //so it's just that song. That way people don't download a ZIP file of one song
   if(obj.data.results.length == 1) {
     var button = document.querySelector('a[role=download-release]');
-    button.setAttribute('href', obj.data.results[0].downloadLink)
+    if(button) {
+      button.setAttribute('href', obj.data.results[0].downloadLink)
+    }
   }
 }
 

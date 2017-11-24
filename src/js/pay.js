@@ -213,7 +213,7 @@ function checkoutSubscriptions (e, el) {
     }
 
     //After successfully signin in or signup either through us, Facebook, or Google, this is checked
-    var signOn = function (err, obj, xhr) {
+    var signOn = function (err, result, xhr) {
       if(err) {
         return window.alert(err.message);
       }
@@ -254,6 +254,8 @@ function checkoutSubscriptions (e, el) {
     }
 
     if(signOnMethod == 'sign-up') {
+      data = transformSubmittedAccountData(data);
+
       //The social sign ons require us to send them to the /confirm-sign-up page
       //which when successfull will redirect them back here and try to update their cart to what it was before
       var qo = queryStringToObject();
@@ -277,15 +279,21 @@ function checkoutSubscriptions (e, el) {
       if(socialSignOn == 'google'){
         signUpGoogle({
           redirect: redirectTo
-        });
+        }, signOn);
       }
       else if (socialSignOn == 'facebook'){
         signUpFacebook({
           redirect: redirectTo
-        });
+        }, signOn);
       }
       else {
-        if(!validateSignUp(data)) return
+        var errors = validateSignUp(data)
+        if(errors.length > 0) {
+          errors.forEach(function (err) {
+            toasty(new Error(err));
+          })
+          return
+        }
         signUp(data, '/signup', signOn);
       }
     }
@@ -306,11 +314,19 @@ function checkoutSubscriptions (e, el) {
 }
 
 checkoutSubscriptions.paypal = function checkoutSubscriptionsStripe (data, subs) {
-  var returnUrl = location.origin + '/account/services/processing?type=subscriptions'
+  var returnUrl = location.origin + '/account/services/processing?type=';
   var qo = queryStringToObject(window.location.search)
+  if(qo.ref == 'gold') {
+    returnUrl += 'gold'
+  }
+  else {
+    returnUrl += 'subscriptions'
+  }
+
   if(qo.hasOwnProperty('humble')) {
     returnUrl += '&humble=1'
   }
+
   requestJSON({
     url: endpoint + '/self/subscription/services',
     method: 'POST',
@@ -356,7 +372,11 @@ checkoutSubscriptions.stripe = function checkoutSubscriptionsStripe (data, subs)
           go('/humble')
         }
         else {
-          go('/account/services/subscribed')
+          var url = '/account/services/subscribed';
+          if(qo.ref == 'gold') {
+            url += '?type=gold';
+          }
+          go(url);
         }
       })
     }
@@ -539,9 +559,13 @@ function completedProcessing () {
     uri     = 'whitelist/buyout/complete'
     forward = '/account/services/buyout/purchased'
   }
-  if (obj.type == 'subscriptions' || obj.type == 'resume') {
+  else if (obj.type == 'subscriptions' || obj.type == 'resume' || obj.type == 'gold') {
     uri     = 'subscription/services/complete'
     forward = '/account/services/subscribed'
+
+    if (obj.type == 'gold') {
+      forward += '?type=gold'
+    }
 
     if(obj.humble) {
       forward = '/humble'
@@ -785,7 +809,7 @@ function subscribeNewLicense (e, el) {
 
 function scrollToCheckout () {
   setTimeout(function () {
-    scrollToAnimated(document.querySelector('#new-subscriptions'))
+    scrollToEl(document.querySelector('#new-subscriptions'))
   }, 500)
 }
 
@@ -817,10 +841,30 @@ function servicesChangeSignOnMethod (e, newMethod) {
   }
 }
 
+function transformCanceledPayment (obj) {
+  obj = obj || {};
+  var qo = queryStringToObject(window.location.search);
+  if(qo.type == 'gold') {
+    obj.returnUrl = '/gold/buy';
+    obj.returnLabel = 'Gold';
+  }
+  else {
+    obj.returnUrl = '/account/services';
+    obj.returnLabel = 'services';
+  }
+  return obj;
+}
+
 function transformSubscribed (obj) {
   obj = obj || {};
+  var qo = queryStringToObject(window.location.search);
   if(isSignedIn()) {
-    servicesSignUpTest.convert();
+    //The ?type=gold should only be added for peopleing come from /gold/get
+    //Which redirects to /gold/buy or /account/services?ref=gold
+    //Those two pages will append type=gold on this return URL is needed
+    if(qo.type == 'gold') {
+      goldBuyVsAccountServicesTest.convert();
+    }
   }
   return obj;
 }

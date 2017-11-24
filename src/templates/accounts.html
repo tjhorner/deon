@@ -100,6 +100,59 @@
 </script>
 
 <script type="text/template"
+        mustache-name="birthday-fields"
+        >
+<select name="birthday_month" class="birthday-month" value="{{birthday_month}}">
+    <option value="01">Jan</option>
+    <option value="02">Feb</option>
+    <option value="03">Mar</option>
+    <option value="04">Apr</option>
+    <option value="05">May</option>
+    <option value="06">Jun</option>
+    <option value="07">Jul</option>
+    <option value="08">Aug</option>
+    <option value="09">Sep</option>
+    <option value="10">Oct</option>
+    <option value="11">Nov</option>
+    <option value="12">Dec</option>
+</select>
+<select name="birthday_day" class="birthday-day" value="{{birthday_day}}">
+    <option value="01">1</option>
+    <option value="02">2</option>
+    <option value="03">3</option>
+    <option value="04">4</option>
+    <option value="05">5</option>
+    <option value="06">6</option>
+    <option value="07">7</option>
+    <option value="08">8</option>
+    <option value="09">9</option>
+    <option value="10">10</option>
+    <option value="11">11</option>
+    <option value="12">12</option>
+    <option value="13">13</option>
+    <option value="14">14</option>
+    <option value="15">15</option>
+    <option value="16">16</option>
+    <option value="17">17</option>
+    <option value="18">18</option>
+    <option value="19">19</option>
+    <option value="20">20</option>
+    <option value="21">21</option>
+    <option value="22">22</option>
+    <option value="23">23</option>
+    <option value="24">24</option>
+    <option value="25">25</option>
+    <option value="26">26</option>
+    <option value="27">27</option>
+    <option value="28">28</option>
+    <option value="29">29</option>
+    <option value="30">30</option>
+    <option value="31">31</option>
+</select>
+<input type="text" class="birthday-year" name="birthday_year" placeholder="YYYY" value="{{birthday_year}}" size="4" />
+</script>
+
+<script type="text/template"
         mustache-name="sign-in-fields"
         >
 <table class="form mobile">
@@ -317,80 +370,96 @@
         transform="mapAccount">
     <div class="container">
         <h1>My Account</h1>
-        <div class="panel">
-            {{#loading}}
-            {{>/loading-view}}
-            {{/loading}}
-            {{#error}}
-            <p>{{message}}</p>
-            <p><a href="/signin?redirect=account">Sign in</a> to view this page.</a></p>
-            {{/error}}
-            {{#data}}
-            <table class="form mobile" trigger-target="saveAccount">
-                <tbody data-set="account">
-                    <tr>
-                        <th>Email</th>
-                        <td>{{email}}</td>
-                    </tr>
-                    <tr>
-                        <th>Display Name</th>
-                        <td><input type="text"
-                                   name="name"
-                                   value="{{name}}"
-                                   placeholder="Nickname"
-                                   data-set-target="account"
-                                   initial-value="{{name}}" />
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>Full Name</th>
-                        <td><input type="text"
-                                   name="realName"
-                                   value="{{realName}}"
-                                   placeholder="Jon GQ Winter"
-                                   data-set-target="account"
-                                   initial-value="{{realName}}" />
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>Location</th>
-                        <td>
-                            {{>location-autocomplete}}
-                            {{#locationLegacy}}
-                                <p>Your country is currently <strong>{{location}}</strong>. Add your city above.</p>
-                            {{/locationLegacy}}
-                        </td>
-                    </tr>
-                    <tr>
-                        <th valign="top">Email settings</th>
-                        <td>
-                            {{>account-email-optins}}
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>Change Password</th>
-                        <td>
-                            <input type="password"
-                                   name="password"
-                                   placeholder="New Password">
-                            <button
-                                class="faux password"
-                                action="togglePassword"
-                                toggle-target="password">
-                                <i class="fa fa-eye-slash"></i>
-                            </button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-            <div class="button-group button-group--margin">
-                <button class="button--cta button--full" 
-                        action="saveAccount"
-                        trigger="saveAccount"
-                        data-set-target="account">
-                    Save
-                </button>
-                <button class="button--danger button--full" action="signOut">Sign Out</button>
+        <div class="flex sign-split">
+
+            <div class="col-xs-12 col-md-6 panel">
+                <h2>Account</h2>
+                {{#loading}}
+                {{>/loading-view}}
+                {{/loading}}
+                {{#error}}
+                <p>{{message}}</p>
+                <p><a href="/signin?redirect=account">Sign in</a> to view this page.</a></p>
+                {{/error}}
+                {{#data}}
+                <table class="form mobile" trigger-target="saveAccount">
+                    <tbody data-set="account">
+                        <tr>
+                            <th>Email</th>
+                            <td>{{email}}</td>
+                        </tr>
+                        <tr>
+                            <th>Display Name</th>
+                            <td><input type="text"
+                                       name="name"
+                                       value="{{name}}"
+                                       placeholder="Nickname"
+                                       data-set-target="account"
+                                       initial-value="{{name}}" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Full Name</th>
+                            <td><input type="text"
+                                       name="realName"
+                                       value="{{realName}}"
+                                       placeholder="Jon GQ Winter"
+                                       data-set-target="account"
+                                       initial-value="{{realName}}" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Location</th>
+                            <td>
+                                {{>location-autocomplete}}
+                                {{#locationLegacy}}
+                                    <p>Your country is currently <strong>{{location}}</strong>. Add your city above.</p>
+                                {{/locationLegacy}}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Birthday</th>
+                            <td>
+                                {{>birthday-fields}}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th valign="top">Email me about</th>
+                            <td>
+                                {{>account-email-optins}}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Change Password</th>
+                            <td>
+                                <input type="password"
+                                       name="password"
+                                       placeholder="New Password">
+                                <button
+                                    class="faux password"
+                                    action="togglePassword"
+                                    toggle-target="password">
+                                    <i class="fa fa-eye-slash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="button-group button-group--margin">
+                    <button class="button--cta button--full"
+                            action="saveAccount"
+                            trigger="saveAccount"
+                            data-set-target="account">
+                        Save
+                    </button>
+                    <button class="button--danger button--full" action="signOut">Sign Out</button>
+                </div>
+            </div>
+            <div class="col-xs-12 col-md-6 panel" id="settings">
+                <h2>Settings</h2>
+                <div source="$endpoint/self/settings"
+                     template="account-settings">
+                </div>
             </div>
         </div>
         <div class="flex sign-split">
@@ -413,7 +482,7 @@
                 {{^hasGoldAccess}}
                 <p>Get an exclusive <strong>Monstercat Gold</strong> flair on the <a href="https://www.reddit.com/r/monstercat">Monstercat Subreddit</a>.</p>
                 <div class="button-group">
-                    <a href="/account/services?ref=gold" class="button">Get Monstercat Gold</a>
+                    <a href="/gold/get" class="button">Get Monstercat Gold</a>
                 </div>
                 {{/hasGoldAccess}}
             </div>
@@ -423,7 +492,7 @@
                 {{>joinGoldDiscord}}
                 {{^hasGoldAccess}}
                 <div class="button-group">
-                    <a href="/account/services?ref=gold" class="button">Get Monstercat Gold</a>
+                    <a href="/gold/get" class="button">Get Monstercat Gold</a>
                 </div>
                 {{/hasGoldAccess}}
             </div>
@@ -477,12 +546,6 @@
                 <button class="button--full" action="disableTwoFactor">Cancel</button>
             </div>
             {{/confirmingTwoFactor}}
-        </div>
-        <div class="panel" id="settings">
-            <h2>Settings</h2>
-            <div source="$endpoint/self/settings"
-                 template="account-settings">
-            </div>
         </div>
         {{/data}}
     </div>
@@ -590,9 +653,17 @@
             </td>
         </tr>
         <tr>
-            <td colspan="2">
+            <th>Birthday</th>
+            <td>
+                {{>birthday-fields}}
+            </td>
+        </tr>
+        <tr>
+            <th valign="top">Email me about</th>
+            <td>
                 {{>account-email-optin-news}}
                 {{>account-email-optin-events}}
+                {{>account-email-optin-merch}}
             </td>
         </tr>
     </tbody>
@@ -603,11 +674,12 @@
     <div class="checkbox email-optin-checkbox">
         <label>
             <input type="checkbox" checked disabled />
-            Email me about important service updates
+            Important service updates
         </label>
     </div>
     {{>account-email-optin-news}}
     {{>account-email-optin-events}}
+    {{>account-email-optin-merch}}
 </script>
 
 <script type="text/template"
@@ -615,7 +687,17 @@
 <div class="checkbox email-optin-checkbox">
     <label>
         <input type="checkbox" name="emailOptIns[news]"{{#emailOptIns.news}} checked="checked"{{/emailOptIns.news}} value="1" />
-        Email me about Monstercat news
+        Monstercat News
+    </label>
+</div>
+</script>
+
+<script type="text/template"
+        mustache-name="account-email-optin-merch">
+<div class="checkbox email-optin-checkbox">
+    <label>
+        <input type="checkbox" name="emailOptIns[merch]"{{#emailOptIns.merch}} checked="checked"{{/emailOptIns.merch}} value="1" />
+        Shop Discounts &amp; Promotions
     </label>
 </div>
 </script>
@@ -625,15 +707,9 @@
 <div class="checkbox email-optin-checkbox">
     <label>
         <input type="checkbox" name="emailOptIns[events]"{{#emailOptIns.events}} checked="checked"{{/emailOptIns.events}} value="1" />
-        Email me about official Monstercat events
+        Official Monstercat Events
     </label>
 </div>
-</script>
-
-<script type="text/template"
-        mustache-name="location-autocomplete">
-    <input id="cityTextField" type="text" size="50" placeholder="City, Country" autocomplete="on" value="{{placeNameFull}}" />
-    <input type="hidden" name="googleMapsPlaceId" value="{{googleMapsPlaceId}}" />
 </script>
 
 <script type="text/template"
