@@ -51,9 +51,9 @@
         mustache-name="bestof2017-results"
         >
       {{#results}}
-        <div class="artist-row bestof2017-result empty no-top-song" artist-id="{{artist._id}}">
-          <div class="banner"{{#artist.profileImageUrl}}background-image="{{artist.profileImageUrl}}?image_width=1024" {{/artist.profileImageUrl}} style="background-position: center {{artist.imagePositionY}}%"></div>
-          <span role="rank" class="rank"></span>
+        <div class="artist-row bestof2017-result empty no-top-song rank-{{rank}}" rank="{{rank}}" artist-id="{{artist._id}}">
+          <div class="banner"></div>
+          <span role="rank" class="rank">{{rank}}</span>
           <h3>{{artist.name}} <span class="votes" role="votes"></span></h3>
           <div class="top-song-container" role="top-song">loading...</div>
         </div>
@@ -111,7 +111,7 @@
               {{#artistBlocks}}
                 <div class="row artist-row artist-row-{{.}} empty">
                   <div class="banner"></div>
-                  <div class="col-md-6 voting-col voting-col-artists">
+                  <div class="col-md-6 col-sm-12 voting-col voting-col-artists">
                     <h3 role="artist-name">Select an Artist</h3>
                     <select name="artist[{{.}}]" role="bestof2017-artist">
                       {{#artistOptions}}
@@ -119,7 +119,7 @@
                       {{/artistOptions}}
                     </select>
                   </div>
-                  <div class="col-md-6 voting-col voting-col-song">
+                  <div class="col-md-6 col-sm-12 voting-col voting-col-song">
                     <h3 class="favorite-song-title">Favorite <span role="artist-name" class="artist-name"></span> Song</h3>
                     <select disabled role="song-poll" name="artistSongs[{{.}}]">
                     </select>

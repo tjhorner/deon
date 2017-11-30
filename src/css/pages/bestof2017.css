@@ -46,12 +46,11 @@
   transition-delay: 0s;
 }
 
-
 .bestof2017 .artist-row .banner {
   position: absolute;
   width: 100%;
   height: 100%;
-  background-size: cover;
+  background-size: 102% auto;
   background-repeat: no-repeat;
   z-index: -1;
   background-color: transparent;
@@ -83,7 +82,7 @@
 }
 
 .bestof2017-voting .voting-col-artists {
-  padding-right: 1rem;
+  padding-bottom: 1rem;
 }
 
 .bestof2017-voting .voting-col-songs {
@@ -226,6 +225,24 @@
 
 .bestof2017-page h1 {
   margin-bottom: 0px;
+}
+
+@media screen and (max-width: 1200px) {
+  .bestof2017-voting {
+    width: 90%;
+    margin: 0 5%;
+  }
+}
+
+@media screen and (min-width: 992px) {
+  .voting-col-artists {
+    padding-right: 1rem;
+    padding-bottom: 0px;
+  }
+}
+
+.bestof2017 .artist-row.demoted {
+  display: none;
 }
 
 
@@ -1442,4 +1459,8 @@
 .bestof2017 .artist-row.rank-120 .top-song-container,
 .bestof2017 .artist-row.rank-120 {
   transition-delay: 12s;
+}
+
+div div.bestof2017 .artist-row {
+  transition-delay: 0s !important;
 }
