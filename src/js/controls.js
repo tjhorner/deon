@@ -384,6 +384,7 @@ function mapTrackElToPlayer (el) {
     source:     el.getAttribute('play-link'),
     skip:       isSignedIn() && !el.hasAttribute('licensable') && (session.settings || {}).hideNonLicensableTracks,
     title:      el.getAttribute('title'),
+    index:      el.getAttribute('index'),
     artist:      el.getAttribute('artist'),
     artistTitle: el.getAttribute('artists-title'),
     trackId:    el.getAttribute('track-id'),

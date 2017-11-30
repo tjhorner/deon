@@ -61,20 +61,22 @@
 </script>
 
 <script type="text/template" mustache-name="bestof2017-topsong" template-name="bestof2017-topsong">
-<h4>Top Song</h4><div class="top-song">{{>playSong}} <span class="top-song-name">{{title}} by {{artistsTitle}}</span></div>
-<div class="download-area {{#hasGold}}has-gold{{/hasGold}}">
-  <a class="silent button--mobile button button--cta download"
-     target="_blank"
-     title="Download Track"
-     track-title="{{title}}"
-     action="accessDownloadOrModal"
-     href="{{downloadLink}}">
-      <i class="fa fa-download"></i> Download Song
-  </a>
-  {{^hasGold}}
-    <div class="requires-gold">Requires <a href="/gold">Gold</a></div>
-  {{/hasGold}}
-</div>
+{{#_id}}
+  <div class="top-song">{{>playSong}} <span class="top-song-name">{{title}} by {{artistsTitle}}</span></div>
+  <div class="download-area {{#hasGold}}has-gold{{/hasGold}}">
+    <a class="silent button--mobile button button--cta download"
+       target="_blank"
+       title="Download Track"
+       track-title="{{title}}"
+       action="accessDownloadOrModal"
+       href="{{downloadLink}}">
+        <i class="fa fa-download"></i> Download Song
+    </a>
+    {{^hasGold}}
+      <div class="requires-gold">Requires <a href="/gold">Gold</a></div>
+    {{/hasGold}}
+  </div>
+{{/_id}}
 </script>
 
 <script type="text/template"

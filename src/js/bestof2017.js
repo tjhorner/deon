@@ -99,7 +99,7 @@ function completedBestOf2017Results () {
     }
     clearTimeout(timeoutUpdateResults);
     if(new Date(transformBestOf2017Results.poll.end) > new Date()) {
-      timeoutUpdateResults = setTimeout(updateResults, 20000);
+      //timeoutUpdateResults = setTimeout(updateResults, 30000);
     }
   }
   updateResults();
@@ -170,9 +170,6 @@ function updateBestOf2017Results () {
       if (a.votes == b.votes) return 0
       return a.votes > b.votes ? -1 : 1;
     })
-    .filter(function (result, index) {
-      return index < artistsToShow + 10; //To save memory I'm not dealing with anything beyond top 40
-    })
     .filter(function (result) {
       if(result == false) {
         return false
@@ -222,14 +219,14 @@ function updateBestOf2017Results () {
       //for their top song that hasn't already been taken by a previous artist
       //Skip artists whose songs are already ranking in top 30 by another artist
       var topSongIds = [];
-      var artistsToRemoveIndexes = []
+      var artistsToDemote = []
       var topUniqueSongs = polls.reduce(function (allTopSongs, poll, pollIndex) {
         if(allTopSongs.length == artistsToShow) {
           return allTopSongs
         }
         var artistTopSongs= Object.keys(poll.countsByValue).map(function (songId, index) {
           var track = transformBestOf2017Results.trackAtlas[songId];
-          var votes = (poll.countsByValue[songId] * 1000) + index + 1 + Math.round((Math.random() * 10));//TESTING
+          var votes = (poll.countsByValue[songId] * 1000) + index + 1 + Math.round((Math.random() * 0.1));//TESTING
           return {
             track: track,
             votes: votes
@@ -261,8 +258,7 @@ function updateBestOf2017Results () {
         while(topSong && topSongIds.indexOf(topSong.track._id) >= 0);
 
         if(!topSong) {
-          var artistRemoveIndex = allTopSongs
-          artistsToRemoveIndexes.push(pollIndex);
+          artistsToDemote.push(poll.artist._id);
           return allTopSongs;
         }
 
@@ -271,23 +267,36 @@ function updateBestOf2017Results () {
         return allTopSongs;
       }, []);
 
-      //Remove the artists at the positions that did not have a unique top song
-      artistResults = artistResults.filter(function (ar, index) {
-        var keep = artistsToRemoveIndexes.indexOf(index) == -1;
-        if(!keep) {
-          updateArtistRowElRank(ar.el, artistsToShow.length + keep);
+      //Resort all of the artists, making sure to put demoted ones on the bottom
+      artistResults = artistResults.sort(function (a, b) {
+        var demoteA = artistsToDemote.indexOf(a.artistId) >= 0;
+        var demoteB = artistsToDemote.indexOf(b.artistId) >= 0;
+        console.log('');
+        console.log('a.artist.name',a.artist.name);
+        console.log('demoteA',demoteA);
+        if(demoteA && !demoteB) {
+          return 1;
         }
-        return keep
+
+        if(demoteB && !demoteA) {
+          return -1;
+        }
+
+        return a.rank < b.rank ? -1  : 1;
       });
 
-      //Redo the ranking now that some artists might have been removed
+      //Redo the ranking now that some artists might have moved around
       artistResults = artistResults.map(function (ar, index) {
         ar.rank = index + 1;
+        ar.track = topUniqueSongs[index] ? topUniqueSongs[index].track : false;
         return ar
       });
 
+      console.log('Updating the ranks of the artist els');
+      console.log('xX'.repeat(10));
 
       //Update vote and rank text and CSS classes
+      var numUpdated = 0;
       artistResults.forEach(function (result, index) {
         var artistId = result.artist._id;
         var rank = result.rank;
@@ -296,20 +305,18 @@ function updateBestOf2017Results () {
           return;
         }
 
-        el.classList.toggle('top', rank <= artistsToShow && topUniqueSongs[index]);
-
-        //If they have no top song then don't show them at all
-        if(!topUniqueSongs[index]) {
-          console.log('no top song found for artist at rank ', rank);
-          updateArtistRowElRank(el, artistsToShow+5);
-          return
-        }
-        result.track = topUniqueSongs[index].track;
+        updateArtistRowElRank(el, rank);
+        numUpdated++;
+        el.classList.toggle('top', rank <= artistsToShow);
         var votesEl = el.querySelector('[role=votes]');
         votesEl.innerHTML = result.votes + ' vote' + (result.votes == 1 ? '' : 's');
-        updateArtistRowElRank(el, rank);
         renderArtistRowTrack(artistId, result.track);
       });
+
+      console.log('------------');
+      console.log('numUpdated',numUpdated);
+      console.log('xX'.repeat(10));
+
       var resultContainer = document.querySelector('.bestof2017-results');
       resultContainer.classList.toggle('loading', false);
       //Here we are updating the indexes of the play butons based on their
@@ -317,9 +324,8 @@ function updateBestOf2017Results () {
       //Note: display order is based on classes, not position in HTML
       var trackIndex = 0;
       artistResults.forEach(function (ar, artistIndex) {
-        console.log('trackIndex',trackIndex);
+        var playButton = ar.el.querySelector('button[index][play-link]')
         if(ar.track) {
-          var playButton = ar.el.querySelector('button[index][play-link]')
           if(playButton) {
             playButton.setAttribute('index', trackIndex);
             trackIndex++;
@@ -335,6 +341,9 @@ function updateBestOf2017Results () {
       //Grab the tracks from the dom. Some new ones may have been added
       //These are sorted by the [index] property on the button
       var playableTracks = buildTracks();
+      playableTracks.forEach(function (t, index) {
+        console.log(t.index, index);
+      })
       playableTracks = playableTracks.map(function (track) {
         track.skip = false; //skip will hide unlicensable tracks from licensees, so we turn it off
         return track;
@@ -346,17 +355,28 @@ function updateBestOf2017Results () {
       //find the song that matches the trackId of what's currently in the player
       if(player.playing || player.loading) {
         var currentSong = player.items[player.index]
+        console.log('currentSong', currentSong);
         var found = false;
         var newIndex = -1;
-        for(var i = 0; i < tracks.length; i++) {
+        for(var i = 0; i < playableTracks.length; i++) {
           var t= playableTracks[i];
           if(t.trackId == currentSong.trackId) {
+            console.log('t',t);
+            console.log('newIndex',newIndex);
             newIndex = i;
             found = true;
             break;
           }
         }
-        player.index = newIndex;
+
+        //If the song they were listening to is no longer on the page, then put their location as before the first place song
+        if(!found) {
+          console.log('not found');
+          player.index = -1;
+        }
+        else {
+          player.index = newIndex;
+        }
       }
 
       player.set(playableTracks);
@@ -379,7 +399,8 @@ function updateArtistRowElRank (el, rank) {
 }
 
 function renderArtistRowTrack (artistId, track) {
-  var el = document.querySelector('.artist-row[artist-id="' + artistId+ '"]');
+  var sel= '.artist-row[artist-id="' + artistId+ '"]';
+  var el = document.querySelector(sel);
   if(!el) {
     console.warn('No el for this artistRow')
     return
@@ -397,6 +418,7 @@ function renderArtistRowTrack (artistId, track) {
   }
   else {
     el.classList.toggle('no-top-song', true);
+    render(topSongEl, getTemplate('bestof2017-topsong'), false);
   }
 
 }
@@ -622,6 +644,15 @@ function completedBestOf2017 () {
     });
   });
   hookBestOfTweetButton();
+
+  var rows = document.querySelectorAll('.artist-row');
+  rows.forEach(function (r) {
+    console.log('r',r);
+    r.addEventListener('click', function () {
+      var playButton = r.querySelector('button[play-link]');
+      console.log('playButton',playButton);
+    })
+  })
 }
 
 function hookBestOfTweetButton () {

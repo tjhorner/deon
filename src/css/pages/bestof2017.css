@@ -57,7 +57,15 @@
   left: 0px;
   top: 0px;
   opacity: 0;
-  transition: opacity 1s ease 0.25s;
+  transition: all 1s ease;
+}
+
+.bestof2017 .artist-row:hover .banner {
+  transform: scale(1.05);
+}
+
+.bestof2017 .artist-row:hover .top-song button {
+  color: dodgerblue;
 }
 
 .bestof2017 .artist-row .banner.on {
@@ -103,6 +111,7 @@
   height: 3180px;
   position: relative;
   overflow: hidden;
+  z-index: 1;
 }
 
 .bestof2017-results.loading {
@@ -123,7 +132,7 @@
   transform: translateY(1060px);
   color: #fff;
   height: 106px;
-  padding: 0.5rem 1rem 0.5rem 2.75rem;
+  padding: 1.25rem 1rem 0.5rem 3rem;
   background: #000;
 }
 
@@ -166,7 +175,7 @@
 }
 
 .bestof2017-results .artist-row .top-song-container {
-  margin-top: 10px;
+  margin-top: 6px;
 }
 
 .bestof2017-results .artist-row .top-song button {
@@ -311,6 +320,14 @@
 
 .banner[release=eclipse-lookas] {
   background-position-y: 55%;
+}
+
+.banner[release=rocket-league-x-monstercat-vol-1-various-artists] {
+  background-position-y: 38.7%;
+}
+
+.banner[release=we-are-one-flite] {
+    background-position-y: 56%;
 }
 
 /* We should use SASS
