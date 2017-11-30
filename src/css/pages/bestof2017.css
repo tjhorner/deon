@@ -105,6 +105,14 @@
   overflow: hidden;
 }
 
+.bestof2017-results.loading {
+  text-align: left;
+}
+
+.bestof2017-results.loading .artist-row {
+  opacity: 0.1 !important;
+}
+
 .bestof2017-results .artist-row {
   opacity: 1;
   transition: all 0.5s ease;
@@ -245,6 +253,65 @@
   display: none;
 }
 
+.banner[release] {
+  background-position-y: 50%;
+}
+
+.banner[release="connecting-the-dots-ep-conro"] {
+  background-position-y: 27%;
+}
+
+.banner[release="someone-new-feat-desi-valentine-unlike-pluto"] {
+  background-position-y: 55%;
+}
+
+.banner[release="the-meaning-gent-jawns"] {
+  background-position-y: 45%;
+}
+
+.banner[release="saving-light-feat-haliene-gareth-emery-standerwick"] {
+  background-position-y: 42%;
+}
+
+.banner[release="sweet-feat-mister-blonde-unlike-pluto"] {
+  background-position-y: 30.5%;
+}
+
+.banner[release="stay-feat-holly-delta-heavy-x-dirty-audio"] {
+  background-position-y: 71%;
+}
+
+.banner[release="bomb-feat-leyet-bishu"] {
+  background-position-y: 48%;
+}
+
+.banner[release="new-dawn-bad-computer"] {
+  background-position-y: 47.5%;
+}
+
+.banner[release=told-ya-so-grabbitz] {
+  background-position-y: 49.5%;
+}
+
+.banner[release=freak-zac-waters] {
+  background-position-y: 43%;
+}
+
+.banner[release=party-dont-stop-darren-styles-dougal-gammer] {
+  background-position-y: 17%;
+}
+
+.banner[release="monstercat-uncaged-vol-3-various-artists"] {
+  background-position-y: 46%;
+}
+
+.banner[release=got-your-love-dirtyphonics-x-riot] {
+  background-position-y: 52%;
+}
+
+.banner[release=eclipse-lookas] {
+  background-position-y: 55%;
+}
 
 /* We should use SASS
 

@@ -38,7 +38,7 @@
       {{#status.canVote}}
       <a href="/bestof2017" class="button">Vote Now</a>
       {{/status.canVote}}
-      <div role="bestof2017-results" class="bestof2017-results bestof2017">
+      <div role="bestof2017-results" class="bestof2017-results bestof2017 loading">
         {{>bestof2017-results}}
       </div>
     {{/data}}
@@ -61,7 +61,7 @@
 </script>
 
 <script type="text/template" mustache-name="bestof2017-topsong" template-name="bestof2017-topsong">
-<h4>Top Song <span class="votes">{{votes}}</span></h4><div class="top-song">{{>playSong}} <span class="top-song-name">{{title}} by {{artistsTitle}}</span></div>
+<h4>Top Song</h4><div class="top-song">{{>playSong}} <span class="top-song-name">{{title}} by {{artistsTitle}}</span></div>
 <div class="download-area {{#hasGold}}has-gold{{/hasGold}}">
   <a class="silent button--mobile button button--cta download"
      target="_blank"
