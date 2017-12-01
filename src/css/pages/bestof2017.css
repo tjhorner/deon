@@ -1,6 +1,6 @@
 .bestof2017-voting {
-  width: 70%;
-  margin: 0px 15%;
+  width: 80%;
+  margin: 0px 10%;
 }
 
 .bestof2017-voting h2 {
@@ -64,7 +64,7 @@
   cursor: pointer;
 }
 
-.bestof2017 .artist-row:hover .banner {
+.bestof2017-results .artist-row:hover .banner {
   transform: scale(1.05);
   transition-duration: 0.25s;
 }
@@ -148,6 +148,10 @@
 .bestof2017-results .artist-row .top-song-container {
   opacity: 1;
   transition: opacity 0.5s ease;
+}
+
+.bestof2017-results .artist-row.no-top-song {
+  display: none;
 }
 
 .bestof2017-results .artist-row.no-top-song .top-song-container {
@@ -345,6 +349,131 @@
 
 .banner[release=disorder-riot] {
   background-position-y: 37%;
+}
+
+.banner[release=orbiter-orbiter] {
+    background-position-y: 4.25%;
+}
+
+.banner[release=got-to-be-topi] {
+  background-position-y: 37%;
+}
+
+.banner[release=home-nitro-fun] {
+    background-position-y: 65%;
+}
+
+.banner[release=vantablack-ep-dirtyphonics-sullivan-king] {
+    background-position-y: 55%;
+}
+
+.banner[release=roller-coaster-dirty-audio-max-styler] {
+    background-position-y: 65%;
+}
+.banner[release=spectrum-ep-muzzy] {
+    background-position-y: 82.5%;
+}
+.banner[release=ready-to-go-feat-kingdms-aruna-rameses-b] {
+    background-position-y: 30%;
+}
+.banner[release=extraordinary-feat-elizaveta-pegboard-nerds-spyker] {
+    background-position-y: 13.5%;
+}
+.banner[release=holy-feat-micah-martin-kayzo-slander] {
+    background-position-y: 46%;
+}
+.banner[release=nobushi-reach] {
+    background-position-y: 26%;
+}
+.banner[release=bandit-kuuro] {
+    background-position-y: 79%;
+}
+.banner[release=watch-out-feat-ragga-twins-dirtyphonics-bassnectar] {
+    background-position-y: 45%;
+}
+.banner[release=bollywood-stunna-reach] {
+    background-position-y: 26.5%;
+}
+.banner[release=without-you-feat-dylan-matthew-slander-kayzo] {
+    background-position-y: 59%;
+}
+.banner[release=tomorrow-feat-matt-van-holly-drummond-mr-fijiwiji-direct] {
+    background-position-y: 74%;
+}
+.banner[release=dynamo-puppet] {
+    background-position-y: 17.5%;
+}
+.banner[release=fear-is-fleeting-ep-puppet] {
+    background-position-y: 20%;
+}
+.banner[release=chipland-nanobii] {
+    background-position-y: 60%;
+}
+.banner[release=jump-feat-nevve-droeloe] {
+    background-position-y: 45%;
+}
+.banner[release=decoy-world-feat-park-avenue-intercom] {
+    background-position-y: 38%;
+}
+.banner[release=andromeda-feat-matt-van-mr-fijiwiji-exist-strategy] {
+    background-position-y: 73%;
+}
+.banner[release=boom-ricci] {
+    background-position-y: 36%;
+}
+.banner[release=get-it-all-feat-emily-hendrix-myrne-popeska] {
+    background-position-y: 54%;
+}
+.banner[release=escape-noisestorm] {
+    background-position-y: 75%;
+}
+.banner[release=you-me-and-gravity-koven-crystal-skies] {
+    background-position-y: 57%;
+}
+.banner[release=superhuman-gammer-remix-feat-eric-leva-slander] {
+    background-position-y: 70%;
+}
+.banner[release=crazy-tokyo-machine] {
+    background-position-y: 30%;
+}
+.banner[release=losing-you-ephixa-laura-brehm] {
+    background-position-y: 55%;
+}
+.banner[release=someone-new-feat-desi-valentine-unlike-pluto] {
+    background-position-y: 56%;
+}
+.banner[release=borneo-wolfgang-gartner-aero-chord] {
+    background-position-y: 52%;
+}
+.banner[release=resistance-aero-chord] {
+  background-position-y: 33%;
+}
+.banner[release=us-against-the-world-darren-styles]{
+  background-position-y: 36%;
+}
+.banner[release=the-drop-gammer] {
+    background-position-y: 20%;
+}
+.banner[release="are-we-still-young-feat-jessi-mason-grant"] {
+    background-position-y: 70%;
+}
+.banner[release=constellations-feat-jessi-mason-grant] {
+    background-position-y: 48%;
+}
+.banner[release=spitfire-infected-mushroom] {
+    background-position-y: 58%;
+}
+.banner[release=rapture-feat-mc-mota-kuuro] {
+    background-position-y: 75%;
+}
+.banner[release=higher-modestep] {
+  background-position-y: 64%;
+}
+.banner[release=tomorrow-feat-matt-van-holly-drummond-mr-fijiwiji-direct] {
+  background-position-y: 72.2151%;
+}
+.banner[release=spectrum-ep-muzzy] {
+  background-position-y: 51.7238%;
 }
 
 /* We should use SASS

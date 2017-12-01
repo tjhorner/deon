@@ -132,6 +132,9 @@ function completedBestOf2017Results () {
     }
 
     var el = document.querySelector("[role=last-updated]");
+    if(!el) {
+      return
+    }
     el.innerHTML = updatedText;
     el.classList.toggle('hide', false);
     clearTimeout(timeoutUpdateTimeNotice);
@@ -141,10 +144,11 @@ function completedBestOf2017Results () {
 
   var rows = document.querySelectorAll('.artist-row');
   rows.forEach(function (r) {
-    console.log('r',r);
     r.addEventListener('click', function (e) {
+      if(e.target && e.target.getAttribute('action')){
+        return
+      }
       var playButton = r.querySelector('button[play-link]');
-      console.log('playButton',playButton);
       if(playButton) {
         runAction(e, playButton)
       }
@@ -171,7 +175,7 @@ function updateBestOf2017Results () {
 
     //Let's build our array of artist results sorted by rank
     var artistResults = result.countsByIndex.map(function (votes, index) {
-      votes = (votes * 1000) + index + Math.round(Math.random() * 10); //This is for testing
+      //votes = Math.round((Math.random() * 100));//TESTING
       return {
         artistId: result.poll.choices[index],
         votes: votes
@@ -237,14 +241,15 @@ function updateBestOf2017Results () {
         }
         var artistTopSongs= Object.keys(poll.countsByValue).map(function (songId, index) {
           var track = transformBestOf2017Results.trackAtlas[songId];
-          var votes = (poll.countsByValue[songId] * 1000) + index + 1 + Math.round((Math.random() * 0.1));//TESTING
+          var votes = poll.countsByValue[songId];
+          //var votes = Math.round((Math.random() * 100));//TESTING
           return {
             track: track,
             votes: votes
           }
         })
         .filter(function (r) {
-          return r.votes > 0
+          return r.votes > 0 && r.track
         })
         .sort(function (a, b) {
           if(a.votes == b.votes) {
@@ -344,9 +349,7 @@ function updateBestOf2017Results () {
       //Grab the tracks from the dom. Some new ones may have been added
       //These are sorted by the [index] property on the button
       var playableTracks = buildTracks();
-      playableTracks.forEach(function (t, index) {
-        console.log(t.index, index);
-      })
+
       playableTracks = playableTracks.map(function (track) {
         track.skip = false; //skip will hide unlicensable tracks from licensees, so we turn it off
         return track;
@@ -358,14 +361,11 @@ function updateBestOf2017Results () {
       //find the song that matches the trackId of what's currently in the player
       if(player.playing || player.loading) {
         var currentSong = player.items[player.index]
-        console.log('currentSong', currentSong);
         var found = false;
         var newIndex = -1;
         for(var i = 0; i < playableTracks.length; i++) {
           var t= playableTracks[i];
           if(t.trackId == currentSong.trackId) {
-            console.log('t',t);
-            console.log('newIndex',newIndex);
             newIndex = i;
             found = true;
             break;
@@ -374,7 +374,6 @@ function updateBestOf2017Results () {
 
         //If the song they were listening to is no longer on the page, then put their location as before the first place song
         if(!found) {
-          console.log('not found');
           player.index = -1;
         }
         else {
@@ -509,6 +508,15 @@ function changeBestOf2017Song (e) {
 
 function updateArtistRowReleaseArt (artistId, song) {
   var artistRowEl = document.querySelector('.artist-row[artist-id="' + artistId + '"]');
+  var banner = artistRowEl.querySelector('.banner');
+
+  if(!song) {
+    artistRowEl.classList.toggle('empty', true);
+    banner.classList.toggle('on', false);
+    banner.setAttribute('release', '');
+    banner.style.backgroundImage = '';
+    return
+  }
   if(artistRowEl.getAttribute('track-id') == song._id) {
     return
   }
@@ -526,11 +534,10 @@ function updateArtistRowReleaseArt (artistId, song) {
     //Here we are loading up the album art of the first release that this song appeared on
     //Doing it with a new Image() call allows us to fade it in after the image is fully loaded
     var album = result.results[0];
-    var banner = artistRowEl.querySelector('.banner');
     var slug = slugify(album.title + ' ' + album.renderedArtists);
-    banner.setAttribute('release', slug)
     var img = new Image();
     img.onload = function () {
+      banner.setAttribute('release', slug)
       banner.style.backgroundImage = 'url("' + img.src + '")';
       banner.classList.toggle('on', true);
       artistRowEl.classList.toggle('empty', false);
@@ -634,13 +641,13 @@ function completedBestOf2017 () {
 
           if(options.length > 1) {
             songEl.innerHTML = '<option value=0>select a song</option>' + options;
-
+            //
           }
           else {
             songEl.innerHTML = options;
-            changeBestOf2017Song.call(songEl);
           }
 
+          changeBestOf2017Song.call(songEl);
           songEl.disabled = false
         });
       });
@@ -731,7 +738,7 @@ function clickSubmitBestOf2017 (e) {
     var songId = pv.song._id;
     var index = songIdVotes.indexOf(songId);
     if(index >= 0) {
-      toasty(new Error('Your vote for <em>' + pv.song.title + '</em> is already under ' + songArtistVotes[index]));
+      toasty(new Error('Your vote for <em>' + pv.song.title + '</em> is already under ' + songArtistVotes[index] + '.'));
       dupeSongs = true;
     }
     else {
@@ -741,7 +748,7 @@ function clickSubmitBestOf2017 (e) {
   });
 
   if(dupeSongs) {
-    //return
+    return
   }
 
   pollVotes.push({
@@ -793,7 +800,7 @@ function getVotedForTweet (artistAtlas, breakdown) {
   }).join(' ') + '';
 
   var link = 'monster.cat/bestof2017';
-  if(tweet.length + link.length < 141) {
+  if(tweet.length + link.length < 281) {
     tweet += ' ' + link;
   }
 
@@ -804,4 +811,27 @@ function clickCloseBestOf2017ThankYou () {
   setCookie('hideBestOf2017ThankYou', "true");
   var alert = document.querySelector('[role=thank-you-alert]');
   alert.classList.toggle('hide', true);
+}
+
+/* These are functions I used to fiddle with the position of releases to get the best looking */
+function move (dir) {
+  var el = document.querySelector('.banner[release]');
+  var y = window.getComputedStyle(el).backgroundPositionY;
+  y = y.replace('%', '');
+  y = parseFloat(y);
+  y += dir;
+  el.style.backgroundPositionY = y + '%';
+  console.log(`.banner[release=` + el.getAttribute('release') + `] {
+  background-position-y: ` + y + `%;
+}`)
+}
+
+function down (num) {
+  num= num || -0.5
+  move(num * -1);
+}
+
+function up (num) {
+  num = num || 0.5;
+  move(num);
 }
