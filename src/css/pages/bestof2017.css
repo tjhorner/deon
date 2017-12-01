@@ -7,7 +7,7 @@
   margin-bottom: 0px;
 }
 
-.bestof2017-voting .artist-row.empty .favorite-song-title {
+.bestof2017-voting .artist-row.no-artist .favorite-song-title {
   opacity: 0.5;
 }
 
@@ -30,7 +30,6 @@
   border: 1px solid #eee;
   position: relative;
   z-index: 1;
-  border-radius: 3px;
   overflow: hidden;
 }
 
@@ -227,7 +226,7 @@
 }
 
 #tweet-vote textarea {
-  width: 50%;
+  width: 100%;
   margin-bottom: 0.25rem;
   font-size: 14px;
   line-height: 1.4;
@@ -253,19 +252,6 @@
   margin-bottom: 0px;
 }
 
-@media screen and (max-width: 1200px) {
-  .bestof2017-voting {
-    width: 90%;
-    margin: 0 5%;
-  }
-}
-
-@media screen and (min-width: 992px) {
-  .voting-col-artists {
-    padding-right: 1rem;
-    padding-bottom: 0px;
-  }
-}
 
 .bestof2017 .artist-row.demoted {
   display: none;
@@ -274,6 +260,110 @@
 .banner[release] {
   background-position-y: 50%;
 }
+
+
+/*
+xs: 0 - 767px
+sm: 768 - 991px
+md: 992px - 1649px
+lg: 1650px - ~
+*/
+
+@media screen and (max-width: 1200px) {
+  .bestof2017-voting {
+    width: 90%;
+    margin: 0 5%;
+  }
+}
+
+@media screen and (max-width: 992px) {
+  .bestof2017-results .top-song-container .button--mobile {
+    padding: 0px;
+  }
+}
+
+
+@media screen and (max-width: 767px) {
+  .bestof2017-page .panel {
+    padding: 0.5rem;
+    margin: 0px;
+    width: 100%;
+    box-shadow: none;
+  }
+
+  .bestof2017-voting {
+    width: 100%;
+    margin: 0%;
+  }
+
+  .bestof2017-voting form {
+    margin: 0 -10px;
+  }
+
+  .bestof2017 .artist-row {
+    padding: 0.75em 0.5em;
+    margin-bottom: 0.75em;
+    border: 1px solid #eee;
+  }
+
+  .bestof2017-results .artist-row {
+    padding: 1.75em 0.5em 0.75em 0.75em;
+    border: none;
+  }
+
+  .bestof2017-results .artist-row .top-song-container {
+    margin-top: 0px;
+  }
+
+  .bestof2017-results .rank {
+      padding: 0.1rem 0;
+      width: 1.5em;
+      font-size:16px;
+  }
+
+  .bestof2017-results .download-area.has-gold {
+    top: 0px;
+    right: 0px;
+  }
+
+  .bestof2017-results .download-area .txt {
+    display: none;
+  }
+
+  .bestof2017-results .download-area {
+    opacity: 1;
+  }
+
+  .bestof2017-results .download-area a.download {
+    padding: 5px 4px 4px 7px;
+    background: white;
+    color: dodgerblue;
+    border: none;
+  }
+
+  #tweet-vote .button {
+    width: 100%;
+    text-align: center;
+    margin-bottom: 1em;
+  }
+
+  #tweet-vote textarea {
+    margin-bottom: 1em;
+  }
+}
+
+@media screen and (min-width: 992px) {
+  .voting-col-artists {
+    padding-right: 1rem;
+    padding-bottom: 0px;
+  }
+
+  #tweet-vote textarea {
+    width: 50%;
+  }
+}
+
+/* Custom positioning for releases */
 
 .banner[release="connecting-the-dots-ep-conro"] {
   background-position-y: 27%;
@@ -474,6 +564,21 @@
 }
 .banner[release=spectrum-ep-muzzy] {
   background-position-y: 51.7238%;
+}
+.banner[release=confessions-feat-cozi-zuehlsdorff-myrne] {
+  background-position-y: 29.3959%;
+}
+.banner[release=feel-something-feat-kayla-diamond-anevo] {
+  background-position-y: 70.3124%;
+}
+.banner[release=waiting-on-your-call-feat-park-avenue-anevo] {
+  background-position-y: 55.1127%;
+}
+.banner[release=without-you-feat-victoria-zaro-grant-anevo-conro] {
+  background-position-y: 51.6127%;
+}
+.banner[release=eyes-wide-open-bishu] {
+  background-position-y: 21.5044%;
 }
 
 /* We should use SASS

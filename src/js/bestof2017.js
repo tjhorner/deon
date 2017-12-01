@@ -566,6 +566,7 @@ function completedBestOf2017 () {
       var bannerEl = artistRowEl.querySelector('.banner')
 
       if(artistId && artistId != "-1") {
+        artistRowEl.classList.toggle('no-artist', false);
         artistRowEl.setAttribute('artist-id', artistId);
         var data = getBestOf2017FormData();
         var otherSelectedArtists = data.artist.reduce(function (list, id, i) {
@@ -594,7 +595,7 @@ function completedBestOf2017 () {
           if(err) {
             bannerEl.classList.toggle('on', false);
             bannerEl.style.backgroundImage = '';
-            artistRowEl.classList.toggle('empty', false);
+            artistRowEl.classList.toggle('empty', true);
             return
           }
         });
@@ -603,6 +604,7 @@ function completedBestOf2017 () {
         songArtistNameEl.innerHTML = '';
         artistNameEl.innerHTML = 'Select an Artist';
         artistRowEl.removeAttribute('artist-id');
+        artistRowEl.classList.toggle('no-artist', true);
         artistRowEl.classList.toggle('empty', true);
         songEl.innerHTML = '';
         songEl.disabled = true;
@@ -827,6 +829,11 @@ function move (dir) {
   console.log(`.banner[release=` + el.getAttribute('release') + `] {
   background-position-y: ` + y + `%;
 }`)
+}
+
+function reset () {
+  var el = document.querySelector('.banner[release]');
+  el.style.backgroundPositionY = null;
 }
 
 function down (num) {

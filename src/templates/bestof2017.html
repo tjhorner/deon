@@ -7,7 +7,7 @@
   <div>
     <a class="button button--cta" target="_blank" role="tweet">Tweet Your Votes</a>
     {{#viewResultsLink}}
-    <a class="button" href="/bestof2017/results">View the results</a>
+    <a class="button" href="/bestof2017/results">View Live results</a>
     {{/viewResultsLink}}
   </div>
 </form>
@@ -64,13 +64,13 @@
 {{#_id}}
   <div class="top-song">{{>playSong}} <span class="top-song-name">{{title}} by {{artistsTitle}}</span></div>
   <div class="download-area {{#hasGold}}has-gold{{/hasGold}}">
-    <a class="silent button--mobile button button--cta download"
+    <a class="silent button button--cta download"
        target="_blank"
        title="Download Track"
        track-title="{{title}}"
        action="accessDownloadOrModal"
        href="{{downloadLink}}">
-        <i class="fa fa-download"></i> Download Song
+        <i class="fa fa-download"></i> <span class="txt">Download Song</span>
     </a>
     {{^hasGold}}
       <div class="requires-gold">Requires <a href="/gold">Gold</a></div>
@@ -84,7 +84,7 @@
         page-title="Best of 2017"
         transform="transformBestOf2017"
         completed="completedBestOf2017">
-<div class="container">
+<div class="container bestof2017-page">
   <div class="panel">
     {{#data}}
       {{^status.open}}
@@ -111,9 +111,9 @@
             <p>Voting closes {{votingCloseTime}}.</p>
             <form role="bestof2017">
               {{#artistBlocks}}
-                <div class="row artist-row artist-row-{{.}} empty">
+                <div class="row artist-row artist-row-{{.}} empty no-artist">
                   <div class="banner"></div>
-                  <div class="col-md-6 col-sm-12 voting-col voting-col-artists">
+                  <div class="col-md-6 col-xs-12 voting-col voting-col-artists">
                     <h3 role="artist-name">Select an Artist</h3>
                     <select name="artist[{{.}}]" role="bestof2017-artist">
                       {{#artistOptions}}
@@ -121,7 +121,7 @@
                       {{/artistOptions}}
                     </select>
                   </div>
-                  <div class="col-md-6 col-sm-12 voting-col voting-col-song">
+                  <div class="col-md-6 col-xs-12 voting-col voting-col-song">
                     <h3 class="favorite-song-title">Favorite <span role="artist-name" class="artist-name"></span> Song</h3>
                     <select disabled role="song-poll" name="artistSongs[{{.}}]">
                     </select>
@@ -130,7 +130,7 @@
               {{/artistBlocks}}
               <div class="submit-container">
                 <button class="btn button--cta" type="button" onclick="clickSubmitBestOf2017(event)">Submit Your Votes</button>
-                <br /><br /><a href="/bestof2017/results">View Results</a>
+                <br /><br /><a href="/bestof2017/results">View Live Results</a>
               </div>
             </form>
           </div>
