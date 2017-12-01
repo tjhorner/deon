@@ -338,7 +338,6 @@ function updateControls () {
 
   var playing = player.playing || player.loading
   var item = player.items[player.index]
-  console.log('item.source', item.source);
   var selector = '[role="play-song"][play-link="' + (item ? item.source : '') + '"]'
 
   var allMatches = document.querySelectorAll(selector)
@@ -347,7 +346,6 @@ function updateControls () {
     if(allMatches.length > 1) {
       //try to find one with a matching index first
       el = document.querySelector(selector+ '[index="' + player.index + '"]');
-      console.log('el', el);
     }
     if(!el) {
       el = allMatches[0]

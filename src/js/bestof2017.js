@@ -359,10 +359,10 @@ function updateBestOf2017Results () {
       //to match the new position of the song, because it may have moved
       //We do this by going through the new list of songs built from the HTML until we
       //find the song that matches the trackId of what's currently in the player
+      var newIndex = -1;
       if(player.playing || player.loading) {
         var currentSong = player.items[player.index]
         var found = false;
-        var newIndex = -1;
         for(var i = 0; i < playableTracks.length; i++) {
           var t= playableTracks[i];
           if(t.trackId == currentSong.trackId) {
@@ -382,6 +382,9 @@ function updateBestOf2017Results () {
       }
 
       player.set(playableTracks);
+      if(newIndex > -1) {
+        player.index = newIndex;
+      }
       updateControls();
     });
 
