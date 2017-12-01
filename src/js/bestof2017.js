@@ -99,7 +99,7 @@ function completedBestOf2017Results () {
     }
     clearTimeout(timeoutUpdateResults);
     if(new Date(transformBestOf2017Results.poll.end) > new Date()) {
-      //timeoutUpdateResults = setTimeout(updateResults, 30000);
+      timeoutUpdateResults = setTimeout(updateResults, 30000);
     }
   }
   updateResults();
@@ -139,6 +139,17 @@ function completedBestOf2017Results () {
   }
   updateTimeNotice();
 
+  var rows = document.querySelectorAll('.artist-row');
+  rows.forEach(function (r) {
+    console.log('r',r);
+    r.addEventListener('click', function (e) {
+      var playButton = r.querySelector('button[play-link]');
+      console.log('playButton',playButton);
+      if(playButton) {
+        runAction(e, playButton)
+      }
+    })
+  })
 
   window.addEventListener('popstate', function () {
     clearTimeout(timeout);
@@ -271,9 +282,7 @@ function updateBestOf2017Results () {
       artistResults = artistResults.sort(function (a, b) {
         var demoteA = artistsToDemote.indexOf(a.artistId) >= 0;
         var demoteB = artistsToDemote.indexOf(b.artistId) >= 0;
-        console.log('');
-        console.log('a.artist.name',a.artist.name);
-        console.log('demoteA',demoteA);
+
         if(demoteA && !demoteB) {
           return 1;
         }
@@ -291,9 +300,6 @@ function updateBestOf2017Results () {
         ar.track = topUniqueSongs[index] ? topUniqueSongs[index].track : false;
         return ar
       });
-
-      console.log('Updating the ranks of the artist els');
-      console.log('xX'.repeat(10));
 
       //Update vote and rank text and CSS classes
       var numUpdated = 0;
@@ -313,9 +319,6 @@ function updateBestOf2017Results () {
         renderArtistRowTrack(artistId, result.track);
       });
 
-      console.log('------------');
-      console.log('numUpdated',numUpdated);
-      console.log('xX'.repeat(10));
 
       var resultContainer = document.querySelector('.bestof2017-results');
       resultContainer.classList.toggle('loading', false);
@@ -644,15 +647,6 @@ function completedBestOf2017 () {
     });
   });
   hookBestOfTweetButton();
-
-  var rows = document.querySelectorAll('.artist-row');
-  rows.forEach(function (r) {
-    console.log('r',r);
-    r.addEventListener('click', function () {
-      var playButton = r.querySelector('button[play-link]');
-      console.log('playButton',playButton);
-    })
-  })
 }
 
 function hookBestOfTweetButton () {

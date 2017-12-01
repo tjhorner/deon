@@ -60,8 +60,13 @@
   transition: all 1s ease;
 }
 
+.bestof2017 .artist-row:hover {
+  cursor: pointer;
+}
+
 .bestof2017 .artist-row:hover .banner {
   transform: scale(1.05);
+  transition-duration: 0.25s;
 }
 
 .bestof2017 .artist-row:hover .top-song button {
@@ -327,7 +332,19 @@
 }
 
 .banner[release=we-are-one-flite] {
-    background-position-y: 56%;
+  background-position-y: 56%;
+}
+
+.banner[release=i-hear-you-vicetone] {
+  background-position-y: 47%;
+}
+
+.banner[release=cold-hearted-seven-lions-kill-the-noise] {
+  background-position-y: 28.5%;
+}
+
+.banner[release=disorder-riot] {
+  background-position-y: 37%;
 }
 
 /* We should use SASS
