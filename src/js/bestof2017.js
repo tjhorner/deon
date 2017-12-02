@@ -145,8 +145,12 @@ function completedBestOf2017Results () {
   var rows = document.querySelectorAll('.artist-row');
   rows.forEach(function (r) {
     r.addEventListener('click', function (e) {
-      if(e.target && e.target.getAttribute('action')){
-        return
+      var path = e.path;
+      for (var i = 0; i < e.path.length; i++) {
+        t = e.path[i]
+        if (t.hasAttribute && t.hasAttribute('action')) {
+          return
+        }
       }
       var playButton = r.querySelector('button[play-link]');
       if(playButton) {

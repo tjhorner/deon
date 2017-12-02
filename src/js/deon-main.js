@@ -391,11 +391,15 @@ function getArtistTwitterMention (artist) {
   if(artist.urls) {
     var socials = getSocialsAtlas(artist.urls);
     if(socials.twitter) {
-      var username = socials.twitter.link.match(/^https?:\/\/(www\.)?twitter\.com\/(#!\/)?([^\/]+)(\/\w+)*$/)[3]
-      if(username.substr(0, 1) != '@') {
-        username = '@' + username;
+      var matches = socials.twitter.link.match(/^https?:\/\/(www\.)?twitter\.com\/(#!\/)?([^\/]+)(\/\w+)*$/);
+      var username;
+      if(matches && matches[3]) {
+        var username = matches[3]
+        if(username.substr(0, 1) != '@') {
+          username = '@' + username;
+        }
+        return username;
       }
-      return username;
     }
   }
 

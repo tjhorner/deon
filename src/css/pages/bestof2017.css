@@ -321,17 +321,18 @@ lg: 1650px - ~
       font-size:16px;
   }
 
-  .bestof2017-results .download-area.has-gold {
+  .bestof2017-results .download-area {
     top: 0px;
     right: 0px;
+    opacity: 1;
   }
 
   .bestof2017-results .download-area .txt {
     display: none;
   }
 
-  .bestof2017-results .download-area {
-    opacity: 1;
+  .bestof2017-results .download-area .requires-gold {
+    display: none;
   }
 
   .bestof2017-results .download-area a.download {
