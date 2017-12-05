@@ -485,7 +485,7 @@ function transformBestOf2017 (obj, done) {
 }
 
 function getBestOf2017EndTime (date) {
-  return 'Thursday, Dec 14th @ 11:59 PM PST';
+  return 'Thursday, Dec 7th @ 11:59 PM PST';
 }
 
 

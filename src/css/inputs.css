@@ -132,7 +132,8 @@ button:hover,
   padding: 8px 10px 8px 13px;
 }
 .cl-white .button--cta:active,
-.cl-white .button--cta:hover{
+.cl-white .button--cta:hover,
+.cl-white .button.button--cta:hover{
   background: white;
   border-color: white;
   color: black;
