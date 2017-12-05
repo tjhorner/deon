@@ -598,6 +598,9 @@ lg: 1650px - ~
 .banner[release=ripped-to-pieces-feat-emel-stonebank] {
     background-position-y: 43%;
 }
+.banner[release=moving-hectic-feat-harry-shotta-slips-slurs] {
+    background-position-y: 71%;
+}
 
 /* We should use SASS
 

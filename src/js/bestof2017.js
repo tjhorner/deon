@@ -17,6 +17,7 @@ function getBestOfSongPolls (done) {
 
 function transformBestOf2017Results (obj, done) {
   obj = obj || {};
+  done(null, {loading: true});
   requestJSON({
     url: endpoint + '/poll/' + artistPollId + '/breakdown',
     withCredentials: true
@@ -81,6 +82,7 @@ function transformBestOf2017Results (obj, done) {
             atlas[track._id] = track;
             return atlas;
           });
+          obj.loading = false;
           done(null, obj);
         });
       })
@@ -91,6 +93,10 @@ transformBestOf2017Results.poll = {}
 transformBestOf2017Results.trackAtlas = {}
 
 function completedBestOf2017Results () {
+  var loadingDiv = document.querySelector('[role=bestof2017-results-loading]');
+  if(loadingDiv != null) {
+    return
+  }
   updateBestOf2017Results.lastUpdated = new Date().getTime();
   var timeoutUpdateResults = null;
   var updateResults = function () {

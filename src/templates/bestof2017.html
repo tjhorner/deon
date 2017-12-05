@@ -23,24 +23,28 @@
     <h1>
         Best of 2017 {{^data.status.ended}}Live {{/data.status.ended}}Results
     </h1>
-    {{#loading}}
-      <p>Loading...</p>
-    {{/loading}}
     {{#data}}
-      <p class="last-updated-msg hide" role="last-updated"></p>
-      {{#showThankYou}}
-        <div class="alert alert-info" role="thank-you-alert">
-          <button type="button" class="button button--close" onclick="clickCloseBestOf2017ThankYou()"><i class="fa fa-remove"></i></button>
-          <h2>Thank you for voting!</h2>
-          {{>voted-for-tweet}}
+      {{#loading}}
+        <div class="loading" role=bestof2017-results-loading>
+          <span class="loader"></span>
         </div>
-      {{/showThankYou}}
-      {{#status.canVote}}
-      <a href="/bestof2017" class="button">Vote Now</a>
-      {{/status.canVote}}
-      <div role="bestof2017-results" class="bestof2017-results bestof2017 loading">
-        {{>bestof2017-results}}
-      </div>
+      {{/loading}}
+      {{^loading}}
+        <p class="last-updated-msg hide" role="last-updated"></p>
+        {{#showThankYou}}
+          <div class="alert alert-info" role="thank-you-alert">
+            <button type="button" class="button button--close" onclick="clickCloseBestOf2017ThankYou()"><i class="fa fa-remove"></i></button>
+            <h2>Thank you for voting!</h2>
+            {{>voted-for-tweet}}
+          </div>
+        {{/showThankYou}}
+        {{#status.canVote}}
+        <a href="/bestof2017" class="button">Vote Now</a>
+        {{/status.canVote}}
+        <div role="bestof2017-results" class="bestof2017-results bestof2017 loading">
+          {{>bestof2017-results}}
+        </div>
+      {{/loading}}
     {{/data}}
   </div>
 </div>
