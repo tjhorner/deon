@@ -128,7 +128,7 @@ function completedBestOf2017Results () {
       updatedText += ' Voting is closed.';
     }
     else {
-      updatedText += ' Voting closes at ' + formatBestOf2017EndTime(transformBestOf2017Results.poll.end) + '.';
+      updatedText += ' Voting closes at ' + getBestOf2017EndTime() + '.';
     }
 
     var el = document.querySelector("[role=last-updated]");
@@ -472,15 +472,14 @@ function transformBestOf2017 (obj, done) {
       obj.votedForTweet = getVotedForTweet(transformBestOf2017.artistAtlas, breakdown);
       obj.tweetIntentURL = getVotedForTweetIntentUrl(obj.votedForTweet);
       obj.viewResultsLink = true;
-      obj.votingCloseTime = formatBestOf2017EndTime(poll.end)
+      obj.votingCloseTime = getBestOf2017EndTime(poll.end)
       done(null, obj);
     });
   });
 }
 
-function formatBestOf2017EndTime (date) {
-  var parts = formatDateJSON(date);
-  return parts.weekday + ' at ' + parts.hours + ':' + parts.minutes;
+function getBestOf2017EndTime (date) {
+  return 'Thursday, Dec 14th @ 11:59 PM PST';
 }
 
 
@@ -593,6 +592,7 @@ function completedBestOf2017 () {
         songArtistNameEl.innerHTML = artist.name;
         artistNameEl.innerHTML = artist.name;
         songEl.innerHTML = '<option>loading...</option>';
+        songEl.disabled = false;
         songEl.setAttribute('artist-id', artistId);
 
         getArtistDetails(artist.vanityUri, function (err, details) {
@@ -747,7 +747,7 @@ function clickSubmitBestOf2017 (e) {
     var songId = pv.song._id;
     var index = songIdVotes.indexOf(songId);
     if(index >= 0) {
-      toasty(new Error('Your vote for <em>' + pv.song.title + '</em> is already under ' + songArtistVotes[index] + '.'));
+      toasty(new Error('Sorry, but you can\'t vote for the same song twice. Your vote for <em>' + pv.song.title + '</em> is already under ' + songArtistVotes[index] + '.'));
       dupeSongs = true;
     }
     else {
@@ -804,11 +804,11 @@ function getVotedForTweet (artistAtlas, breakdown) {
   else {
     return false
   }
-  var tweet = 'My #mcatbestof2017 votes ' + artists.map(function (artist) {
+  var tweet = 'My @Monstercat Best of 2017 artists are ' + artists.map(function (artist) {
     return getArtistTwitterMention(artist)
   }).join(' ') + '';
 
-  var link = 'monster.cat/bestof2017';
+  var link = 'monster.cat/vote2017';
   if(tweet.length + link.length < 281) {
     tweet += ' ' + link;
   }

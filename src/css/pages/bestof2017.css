@@ -7,6 +7,11 @@
   margin-bottom: 0px;
 }
 
+.bestof2017-page p {
+  margin-bottom: 1em;
+  max-width: 75ch;
+}
+
 .bestof2017-voting .artist-row.no-artist .favorite-song-title {
   opacity: 0.5;
 }
@@ -327,6 +332,10 @@ lg: 1650px - ~
     opacity: 1;
   }
 
+  .bestof2017-results .download-area.has-gold {
+    top: 0px;
+  }
+
   .bestof2017-results .download-area .txt {
     display: none;
   }
@@ -580,6 +589,14 @@ lg: 1650px - ~
 }
 .banner[release=eyes-wide-open-bishu] {
   background-position-y: 21.5044%;
+}
+
+.banner[release=blast-tokyo-machine] {
+    background-position-y: 77%;
+}
+
+.banner[release=ripped-to-pieces-feat-emel-stonebank] {
+    background-position-y: 43%;
 }
 
 /* We should use SASS

@@ -96,19 +96,24 @@
         {{/isSignedIn}}
         {{#status.voted}}
           <h2>Thank you for voting!</h2>
+          <p>Thank you for submitting your vote, and making 2017 Monstercat’s biggest year ever. The fun doesn't stop here though, make sure to tweet at your favourite artists to let them know that their tracks were your top picks of the year. Then head over to the live results leaderboard to check out the action!</p>
           {{>voted-for-tweet}}
         {{/status.voted}}
         {{^status.voted}}
           <div class="bestof2017-voting bestof2017">
             {{#isSignedIn}}
               <h2>Vote For Your Top 10 Artists of 2017</h2>
-              <p>Put them in any order. Also vote for your favorite song by that artist.</p>
             {{/isSignedIn}}
             {{^isSignedIn}}
               <h2>Sign In to Vote For Your Top 10 Artists of 2017</h2>
+            {{/isSignedIn}}
+            <p>It's that time of year again! With the Monstercat Best of 2017 voting, we’ve amped up the system to provide real-time live polling! Simply select your top 10 artists for 2017, in no particular order, and your favourite track from each (no duplicates please).</p>
+
+            <p>Once submitted, your votes will automatically populate the live results leader board. On {{votingCloseTime}}, the polls will close and the top 30 songs from 2017 will be officially selected!</p>
+
+            {{^isSignedIn}}
               <p>You need to <a href="/sign-in?redirect=bestof2017">sign in</a> or <a href="/sign-up?redirect=bestof2017">register</a> to vote.</p>
             {{/isSignedIn}}
-            <p>Voting closes {{votingCloseTime}}.</p>
             <form role="bestof2017">
               {{#artistBlocks}}
                 <div class="row artist-row artist-row-{{.}} empty no-artist">
