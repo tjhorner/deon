@@ -12,6 +12,19 @@
   max-width: 75ch;
 }
 
+.bestof2017-page .top-banner {
+  color: #fff;
+}
+
+.bestof2017-page .top-banner a {
+  color: dodgerblue;
+  text-decoration: none;
+}
+
+.bestof2017-page .top-banner p.gray {
+  color: #aaa;
+}
+
 .bestof2017-voting .artist-row.no-artist .favorite-song-title {
   opacity: 0.5;
 }

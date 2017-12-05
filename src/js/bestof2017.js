@@ -336,7 +336,9 @@ function updateBestOf2017Results () {
 
 
       var resultContainer = document.querySelector('.bestof2017-results');
-      resultContainer.classList.toggle('loading', false);
+      if(resultContainer) {
+        resultContainer.classList.toggle('loading', false);
+      }
       //Here we are updating the indexes of the play butons based on their
       //display order, which will match the order of artistRows since it was sorted above
       //Note: display order is based on classes, not position in HTML

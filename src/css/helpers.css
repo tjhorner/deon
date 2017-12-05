@@ -3,6 +3,10 @@
   flex-wrap: wrap;
 }
 
+.width--full {
+  width: 100%;
+}
+
 .image-responsive{
   max-width: 380px;
   width: 90%;

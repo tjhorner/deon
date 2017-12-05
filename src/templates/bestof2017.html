@@ -100,7 +100,7 @@
         <div class="banner-shade"></div>
       </div>
       <div class="container flex">
-        <div class="col-xs-12 col-sm-12 col-md-6 cl-white featured-details">
+        <div class="col-xs-12 col-sm-12 col-md-6 featured-details">
           {{^status.open}}
             <h2>Voting is over!</h2>
             <p><a href="/bestof2017/results">See the results</a>.</p>
@@ -112,16 +112,17 @@
               {{>voted-for-tweet}}
             {{/status.voted}}
             {{^status.voted}}
-              <div class="bestof2017-voting bestof2017">
+              <div>
+                <h1>Your Top 10!</h1>
                 {{#isSignedIn}}
-                  <h2>Vote For Your Top 10 Artists of 2017</h2>
+                  <h3>Vote For Your Top 10 Artists of 2017</h3>
                 {{/isSignedIn}}
                 {{^isSignedIn}}
-                  <h2>Sign In to Vote For Your Top 10 Artists of 2017</h2>
+                  <h3>Sign In to Vote For Your Top 10 Artists of 2017</h3>
                 {{/isSignedIn}}
                 <p>It's that time of year again! With the Monstercat Best of 2017 voting, we've amped up the system to provide real-time live polling! Simply select your top 10 artists for 2017, in no particular order, and your favourite track from each (no duplicates please).</p>
 
-                <p>Once submitted, your votes will automatically populate the live results leader board. On {{votingCloseTime}}, the polls will close and the top 30 songs from 2017 will be officially selected!</p>
+                <p class="gray">Once submitted, your votes will automatically populate the live results leader board. On {{votingCloseTime}}, the polls will close and the top 30 songs from 2017 will be officially selected!</p>
 
                 {{^isSignedIn}}
                   <p>You need to <a href="/sign-in?redirect=bestof2017">sign in</a> or <a href="/sign-up?redirect=bestof2017">register</a> to vote.</p>
@@ -156,7 +157,7 @@
                 </div>
               {{/artistBlocks}}
               <div class="submit-container">
-                <button class="btn button--cta" type="button" onclick="clickSubmitBestOf2017(event)">Submit Your Votes</button>
+                <button class="btn button--cta width--full" type="button" onclick="clickSubmitBestOf2017(event)">Submit Your Votes</button>
                 <br /><br /><a href="/bestof2017/results">View Live Results</a>
               </div>
             </form>
