@@ -243,7 +243,6 @@ function updateBestOf2017Results () {
         if(pollA.artist.rank == pollB.artist.rank) {
           return 0
         }
-
         return pollA.artist.rank > pollB.artist.rank ? 1 : -1;
       });
 
@@ -272,8 +271,9 @@ function updateBestOf2017Results () {
           if(a.votes == b.votes) {
             return 0;
           }
-          return a.votes > b.votes ? 1 : -1;
+          return a.votes > b.votes ? -1 : 1;
         });
+
 
         var topSong;
         var songIndex = 0;
