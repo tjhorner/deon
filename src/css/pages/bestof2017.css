@@ -21,6 +21,29 @@
   text-decoration: none;
 }
 
+.bestof2017-page .top-banner a.button.button--cta {
+  color: white;
+  background: dodgerblue;
+  border-color: dodgerblue;
+}
+
+.bestof2017-page .top-banner a.button.button--cta:hover {
+  color: black;
+  background: white;
+  border-color: white;
+}
+
+.bestof2017-page .top-banner a.button {
+  border-color: white;
+  color: white;
+  background: none;
+}
+
+.bestof2017-page .top-banner a.button:hover {
+  background-color: #fff;
+  color: black;
+}
+
 .bestof2017-page .top-banner p.gray {
   color: #aaa;
 }

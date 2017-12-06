@@ -93,6 +93,13 @@ transformBestOf2017Results.poll = {}
 transformBestOf2017Results.trackAtlas = {}
 
 function completedBestOf2017Results () {
+  var meta = {
+    'og:title': 'Monstercat Best of 2017 Results',
+    'og:description': 'Monstercat Best of 2017 voting is underway. Have your voice heard, choose the songs that made up the soundtrack to 2017.',
+    'og:type': 'website',
+    'og:url': 'https://www.monstercat.com/bestof2017/results',
+    'og:image': 'https://assets.monstercat.com/bestof2017header.jpg'
+  }
   var loadingDiv = document.querySelector('[role=bestof2017-results-loading]');
   if(loadingDiv != null) {
     return
@@ -561,6 +568,14 @@ function updateArtistRowReleaseArt (artistId, song) {
 }
 
 function completedBestOf2017 () {
+  var meta = {
+    'og:title': 'Monstercat Best of 2017',
+    'og:description': 'Monstercat Best of 2017 voting is underway. Have your voice heard, choose the songs that made up the soundtrack to 2017.',
+    'og:type': 'website',
+    'og:url': 'https://www.monstercat.com/bestof2017',
+    'og:image': 'https://assets.monstercat.com/bestof2017header.jpg'
+  }
+  setMetaData(meta)
   var artistSelects = document.querySelectorAll('select[role=bestof2017-artist]')
   artistSelects.forEach(function (el, index) {
     el.addEventListener('change', function (e) {
@@ -816,9 +831,14 @@ function getVotedForTweet (artistAtlas, breakdown) {
     return getArtistTwitterMention(artist)
   }).join(' ') + '';
 
-  var link = 'monster.cat/vote2017';
+  var link = 'https://monstercat.com/bestof2017';
   if(tweet.length + link.length < 281) {
     tweet += ' ' + link;
+  }
+
+  var hashtag = ' #McatBestof2017'
+  if(tweet.length + hashtag.length <= 280) {
+    tweet += hashtag;
   }
 
   return tweet;
