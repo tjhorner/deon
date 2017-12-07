@@ -531,7 +531,8 @@ function updateArtistRowReleaseArt (artistId, song) {
   var artistRowEl = document.querySelector('.artist-row[artist-id="' + artistId + '"]');
   var banner = artistRowEl.querySelector('.banner');
 
-  if(!song) {
+  //Doing || true so that we never load the release art
+  if(!song || true) {
     artistRowEl.classList.toggle('empty', true);
     banner.classList.toggle('on', false);
     banner.setAttribute('release', '');
