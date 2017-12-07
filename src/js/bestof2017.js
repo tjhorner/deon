@@ -112,7 +112,7 @@ function completedBestOf2017Results () {
     }
     clearTimeout(timeoutUpdateResults);
     if(new Date(transformBestOf2017Results.poll.end) > new Date()) {
-      timeoutUpdateResults = setTimeout(updateResults, 30000);
+      timeoutUpdateResults = setTimeout(updateResults, 180000);
     }
   }
   updateResults();
