@@ -81,7 +81,7 @@ function transformBestOf2017Results (obj, done) {
             track.downloadLink = getDownloadLink(track.releaseId, track._id);
             atlas[track._id] = track;
             return atlas;
-          });
+          }, []);
           obj.loading = false;
           done(null, obj);
         });
