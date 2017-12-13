@@ -68,11 +68,12 @@
 
 #countdown-banner .countdown-container .countdown .unit {
   display: inline-block;
-  width: 1.8em;
+  width: 2em;
+  text-align: center;
 }
 
 #countdown-banner .countdown-container .countdown .unit.m {
-  width: 2.1em;
+  width: 2.2em;
 }
 
 /*********/

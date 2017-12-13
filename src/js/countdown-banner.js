@@ -13,6 +13,8 @@ function CountdownBanner (id, opts) {
   this.endDate = opts.endDate;
   this.buttonLabel = opts.buttonLabel || 'Go';
   this.url = opts.url;
+  this.urlInfo = opts.urlInfo || this.url;
+  this.urlButton = opts.urlButton || this.url;
 
   if(opts.infoTemplate) {
     this.info = getTemplate(opts.infoTemplate);
