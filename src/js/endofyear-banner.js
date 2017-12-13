@@ -3,8 +3,8 @@ var endOfYearCountdown;
 document.addEventListener('DOMContentLoaded', function() {
   endOfYearCountdown = new CountdownBanner('endofyear', {
     /**/
-    revealDate: new Date("Mon Dec 4 2017 00:01:00 GMT-0500 (EST)"),
-    startDate: new Date("Tue Dec 12 2017 09:00:00 GMT-0500 (EST)"),
+    revealDate: new Date("Sat Dec 23 2017 00:01:00 GMT-0500 (EST)"),
+    startDate: new Date("Tue Dec 26 2017 09:00:00 GMT-0500 (EST)"),
     endDate: new Date("Sun Dec 31 2017 23:59:59 GMT-0500 (EST)"),
     /**/
     /**
