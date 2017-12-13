@@ -1,4 +1,8 @@
-var now = new Date().getTime();
+/*
+👀 👀 👀 👀 👀 👀 👀 👀 👀 👀 👀 👀 👀
+Hey no peeking! The sale is a surprise ;)
+👀 👀 👀 👀 👀 👀 👀 👀 👀 👀 👀 👀 👀
+*/
 var endOfYearCountdown;
 document.addEventListener('DOMContentLoaded', function() {
   endOfYearCountdown = new CountdownBanner('endofyear', {
@@ -8,9 +12,9 @@ document.addEventListener('DOMContentLoaded', function() {
     endDate: new Date("Sun Dec 31 2017 23:59:59 GMT-0500 (EST)"),
     /**/
     /**
-    revealDate: new Date(now - 1000),
-    startDate: new Date(now + 3000),
-    endDate: new Date(now + 1200000 * 200),
+    revealDate: new Date(new Date().getTime() - 1000),
+    startDate: new Date(new Date().getTime() + 3000),
+    endDate: new Date(new Date().getTime() + 1200000 * 200),
     /**/
     urlInfo: 'https://shop.monstercat.com/pages/yearendsale?utm_source=WebsiteBanner&utm_campaign=EOY',
     urlButton: 'https://shop.monstercat.com/pages/yearendsale?utm_source=WebsiteBannerButton&utm_campaign=EOY',
