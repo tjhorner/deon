@@ -16,8 +16,8 @@ document.addEventListener('DOMContentLoaded', function() {
     startDate: new Date(new Date().getTime() + 3000),
     endDate: new Date(new Date().getTime() + 1200000 * 200),
     /**/
-    urlInfo: 'https://shop.monstercat.com/pages/yearendsale?utm_source=WebsiteBanner&utm_campaign=EOY',
-    urlButton: 'https://shop.monstercat.com/pages/yearendsale?utm_source=WebsiteBannerButton&utm_campaign=EOY',
+    urlInfo: 'https://shop.monstercat.com/collections/yearendsale?utm_source=WebsiteBanner&utm_campaign=EOY',
+    urlButton: 'https://shop.monstercat.com/collections/yearendsale?utm_source=WebsiteBannerButton&utm_campaign=EOY',
     buttonLabel: 'Go to Shop',
     infoTemplate: 'endofyear-countdown-info'
   });
