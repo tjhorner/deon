@@ -62,7 +62,8 @@ function CountdownBanner (id, opts) {
       to: to,
       label: label,
       buttonLabel: this.buttonLabel,
-      url: this.url,
+      urlInfo: this.urlInfo,
+      urlButton: this.urlButton,
       info: this.info
     }
 
