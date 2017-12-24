@@ -12,9 +12,7 @@ function CountdownBanner (id, opts) {
   //The end time of the event you're promoing. After this time the banner will not be shown.
   this.endDate = opts.endDate;
   this.buttonLabel = opts.buttonLabel || 'Go';
-  this.url = opts.url;
-  this.urlInfo = opts.urlInfo || this.url;
-  this.urlButton = opts.urlButton || this.url;
+  this.urls = opts.urls || {started: {}, notStarted: {}};
 
   if(opts.infoTemplate) {
     this.info = getTemplate(opts.infoTemplate);
@@ -44,26 +42,35 @@ function CountdownBanner (id, opts) {
   this.render = function () {
     var now = new Date().getTime();
     var to;
+    var started;
     if(now > this.startDate.getTime()) {
+      started = true;
       if(now < this.endDate.getTime()) {
         to = this.endDate;
+        ended = false;
         label = 'Ends In';
       }
       else {
+        ended = true;
         return this.hideBanner();
       }
     }
     else {
+      started = false;
       to = this.startDate;
       label = 'Starts In';
     }
+
+    var urls = started ? this.urls.started : this.urls.notStarted;
 
     var scope = {
       to: to,
       label: label,
       buttonLabel: this.buttonLabel,
-      urlInfo: this.urlInfo,
-      urlButton: this.urlButton,
+      started: started,
+      ended: false,
+      urlInfo: urls.info,
+      urlButton: urls.button,
       info: this.info
     }
 
