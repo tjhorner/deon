@@ -40,7 +40,7 @@
             <option value="">Genre</option>
             {{#genres}}
             <option value="{{name}}">{{name}}</option>
-            {{/genres}} 
+            {{/genres}}
           </select>
         </fieldset>
         <fieldset class="filter-group">
@@ -115,12 +115,17 @@
         <td class="longer-width">
           <div class="scroll-container"
                onmouseover="scrollTrackTitle(this)" onmouseleave="removeScrollTrackTitle(this)">
-            <span class="scroll-title">{{title}}</span>
+            <span class="scroll-title artists">{{title}}</span>
           </div>
           {{>unlicensable}}
         </td>
-        <td class="longer-width">
-          {{artistsTitle}}
+        <td class="longer-width artists">
+            <div class="scroll-container"
+               onmouseover="scrollTrackTitle(this)" onmouseleave="removeScrollTrackTitle(this)">
+            <span class="scroll-title">
+              {{>track-artists}}
+            </span>
+          </div>
         </td>
         <td class="longer-width">
           <div class="scroll-container"

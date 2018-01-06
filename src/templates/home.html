@@ -115,6 +115,7 @@
         mustache-name="home-play-button"
 >
 <input type="hidden" role="release-id" release-id="{{_id}}" />
+<!-- TODO: Change this to just grab latest songs from browse, not only first album -->
 <div style="display: none;"
     source="$endpoint/catalog/release/{{_id}}/tracks"
     template="release-tracks">
