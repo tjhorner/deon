@@ -121,12 +121,6 @@ function transformPlaylistTracks (obj, done) {
   var url = endpoint + '/playlist/' + id + '?fields=name,public,userId'
   var playlist = cache(url)
 
-  console.log('obj',obj);
-
-  /* TODO: Implement backend playlist browsing and use its url here
-  loadCache(endpoint + '/api/track/browse?playlistId=' + id, ...)
-  */
-
   var trackAtlas = toAtlas(obj.results, '_id')
   obj.results = obj.results.map(function (item, index, arr) {
     var track = mapTrack(item)
@@ -156,7 +150,7 @@ function transformPlaylistTracks (obj, done) {
 function completedPlaylist (source, obj) {
   if(obj.error) return
   var pl = obj.data
-  setPageTitle(pl.name + pageTitleGlue + 'Playlist')  
+  setPageTitle(pl.name + pageTitleGlue + 'Playlist')
   setMetaData({
     'og:type': 'music.playlist',
     'og:title': pl.name,

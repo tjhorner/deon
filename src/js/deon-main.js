@@ -606,7 +606,6 @@ function mapTrack (track) {
   if(!track) {
     return {}
   }
-  console.log('track',track);
   track.releaseId         = track.release._id
   track.genresList        = track.genres.filter(function (i) { return i !== track.genre }).join(", ")
   track.genreBonus        = track.genres.length > 1 ? ('+' + (track.genres.length - 1)) : ''
@@ -695,6 +694,13 @@ function transformHome (obj) {
     obj.goldThankYou = thankyous[randomChooser(thankyous.length)-1]
   }
   return obj
+}
+
+function transformHomeTracks (obj, done) {
+  obj = obj || {}
+  transformTracks(obj, function (err, data) {
+    done(err, data);
+  });
 }
 
 function transformPodcast (obj) {
@@ -964,9 +970,10 @@ function transformReleaseTracks (obj, done) {
 
 // TODO Refactor
 function transformTracks (obj, done) {
-  obj.results.forEach(function (track, index, arr) {
+  obj.results.map(function (track, index, arr) {
     mapTrack(track)
     track.index = index
+    return track
   })
   done(null, obj)
 }

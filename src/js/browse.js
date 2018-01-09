@@ -71,7 +71,6 @@ function transformMusicBrowseResults (obj, done) {
       if (!rmap[release._id]) {
         rmap[release._id] = track.release
       }
-      delete track.release
       release = rmap[release._id]
       if (!release.tracks) release.tracks = []
       release.tracks.push(track)
