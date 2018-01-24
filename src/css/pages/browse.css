@@ -140,6 +140,10 @@
   color: dodgerblue;
 }
 
+.catalog-table .empty-message {
+  padding: 1em;
+}
+
 .artists span.artist:before {
   content: ", ";
 }

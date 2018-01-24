@@ -107,6 +107,13 @@
       </tr>
     </thead>
     <tbody>
+      {{^results.length}}
+      <tr>
+        <td colspan="9" class="empty-message">
+          No tracks found.
+        </td>
+      </tr>
+      {{/results.length}}
       {{#results}}
       <tr dblc-action="playSongDblC">
         <td>
