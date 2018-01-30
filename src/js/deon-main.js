@@ -485,14 +485,27 @@ function updatePlayerPlaylist (playlistId, ptracks) {
 }
 
 function mapTrackArtists (track) {
-  return (track.artistDetails || []).filter(function (obj) {
+  var artistDetails = (track.artistDetails || []).filter(function (obj) {
     return !!obj
-  }).map(function (artist) {
-    artist.uri = artist.vanityUri || artist.websiteDetailsId || artist._id;
-    artist.public = !!artist.public
-    artist.artistPageUrl = window.location.protocol + '//' + window.location.hostname + (window.location.port ? ':' + window.location.port : '') + '/artist/' + artist.uri
-    return artist;
+  }).map(function (details) {
+    console.log('details', details);
+    details.uri = details.vanityUri || details.websiteDetailsId || details._id;
+    details.public = !!details.public
+    details.artistPageUrl = window.location.protocol + '//' + window.location.hostname + (window.location.port ? ':' + window.location.port : '') + '/artist/' + details.uri
+    return details;
+  });
+
+  var detailsAtlas = toAtlas(artistDetails, '_id');
+
+  var artists = track.artistUsers.map(function (artistUser) {
+    if (artistUser.websiteDetailsId && detailsAtlas[artistUser.websiteDetailsId]) {
+      return detailsAtlas[artistUser.websiteDetailsId];
+    }
+
+    return artistUser;
   })
+
+  return artists
 }
 
 function getSocials (urls) {
@@ -616,7 +629,7 @@ function mapTrack (track) {
   track.licensable        = track.licensable === false ? false : true
   track.showDownloadLink  = (track.downloadable && track.streamable) || track.freeDownloadForUsers
   track.time              = formatDuration(track.duration)
-  track.artistDetails     = mapTrackArtists(track);
+  track.artistsList       = mapTrackArtists(track);
   track.releaseDate       = formatDateJSON(track.release.releaseDate)
   track.playUrl           = getPlayUrl(track.albums, track.releaseId)
   track.downloadLink      = getDownloadLink(track.release._id, track._id)

@@ -144,16 +144,16 @@
   padding: 1em;
 }
 
-.artists span.artist:before {
+.comma-list span:before {
   content: ", ";
 }
 
-.artists span.artist:nth-child(1):before,
-.artists span.artist:nth-last-child(1):nth-child(1):before {
+.comma-list span:nth-child(1):before,
+.comma-list span:nth-last-child(1):nth-child(1):before {
   content: "";
 }
 
-.artists span.artist:nth-last-child(1):before {
+.comma-list span:nth-last-child(1):before {
   content: " & ";
 }
 

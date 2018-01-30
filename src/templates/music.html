@@ -217,8 +217,8 @@
 
 <script type="text/template"
         mustache-name="track-artists">
-<span class="artists">
-{{#artistDetails}}<span class="artist">{{#public}}<a href="{{artistPageUrl}}">{{name}}</a>{{/public}}{{^public}}{{name}}{{/public}}</span>{{/artistDetails}}
+<span class="artists comma-list">
+{{#artistsList}}<span class="artist">{{#public}}<a href="{{artistPageUrl}}">{{name}}</a>{{/public}}{{^public}}{{name}}{{/public}}</span>{{/artistsList}}
 </span>
 </script>
 
