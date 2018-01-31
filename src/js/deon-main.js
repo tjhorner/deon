@@ -488,7 +488,6 @@ function mapTrackArtists (track) {
   var artistDetails = (track.artistDetails || []).filter(function (obj) {
     return !!obj
   }).map(function (details) {
-    console.log('details', details);
     details.uri = details.vanityUri || details.websiteDetailsId || details._id;
     details.public = !!details.public
     details.artistPageUrl = window.location.protocol + '//' + window.location.hostname + (window.location.port ? ':' + window.location.port : '') + '/artist/' + details.uri
