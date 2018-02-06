@@ -39,8 +39,6 @@ var MusicPlayer = (function () {
     this.clear()
 
     if (this.shouldUseMediaSession) {
-      // Need to do this since `this` in the scope of
-      // the action handler is actually the MediaSession :(
       var self = this
 
       // The `pause` event actually handles both playing and pausing -- so no need to define both
@@ -137,7 +135,6 @@ var MusicPlayer = (function () {
   }
 
   MusicPlayer.prototype.stop = function () {
-    // Kill the MediaSession if needed
     if (this.shouldUseMediaSession)
       navigator.mediaSession.metadata = null
     this.audio.pause()
