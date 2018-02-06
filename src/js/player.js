@@ -38,15 +38,15 @@ var MusicPlayer = (function () {
     this.shuffle = false
     this.clear()
 
-    if(this.shouldUseMediaSession) {
+    if (this.shouldUseMediaSession) {
       // Need to do this since `this` in the scope of
       // the action handler is actually the MediaSession :(
       var self = this
 
       // The `pause` event actually handles both playing and pausing -- so no need to define both
-      navigator.mediaSession.setActionHandler('pause', function() { self.pause() })
-      navigator.mediaSession.setActionHandler('previoustrack', function() { self.previous() })
-      navigator.mediaSession.setActionHandler('nexttrack', function() { self.next() })
+      navigator.mediaSession.setActionHandler('pause', () => self.pause())
+      navigator.mediaSession.setActionHandler('previoustrack', () => self.previous())
+      navigator.mediaSession.setActionHandler('nexttrack', () => self.next())
     }
   }
 
@@ -89,14 +89,14 @@ var MusicPlayer = (function () {
     this.audio.play()
     this.index = index
 
-    if(this.shouldUseMediaSession) {
+    if (this.shouldUseMediaSession) {
       // Set up media session metadata
       var track = this.items[index]
       
       // This `if` is here to prevent the MediaSession from
       // abruptly disappearing from the device and then
       // reappearing
-      if(navigator.mediaSession.metadata === null) {
+      if (navigator.mediaSession.metadata === null) {
         navigator.mediaSession.metadata = new MediaMetadata({
           title: track.title,
           artist: track.artistTitle
@@ -138,7 +138,8 @@ var MusicPlayer = (function () {
 
   MusicPlayer.prototype.stop = function () {
     // Kill the MediaSession if needed
-    if(this.shouldUseMediaSession) navigator.mediaSession.metadata = null
+    if (this.shouldUseMediaSession)
+      navigator.mediaSession.metadata = null
     this.audio.pause()
     this.seek(0)
     this.trigger('stop')
